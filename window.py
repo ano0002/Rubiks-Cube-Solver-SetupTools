@@ -36,32 +36,129 @@ camera.y = 20
 camera.fov = 30
 camera.look_at((0, 0, 0))
 
+rotating = False
+rotating_col = None
+ROTATION_SPEED = 200
+rotation_deg = 0
+
+def update():
+    global rotating
+    global rotating_col
+    global rotation_deg
+    if rotating:
+        if rotating_col == "w+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateWhite(90-rotation_deg)
+                reIndexWhite(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateWhite(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "w-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateWhite(rotation_deg-90)
+                reIndexWhite(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateWhite(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "b+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateBlue(90-rotation_deg)
+                reIndexBlue(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateBlue(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "b-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateBlue(rotation_deg-90)
+                reIndexBlue(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateBlue(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "r+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateRed(90-rotation_deg)
+                reIndexRed(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateRed(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "r-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateRed(rotation_deg-90)
+                reIndexRed(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateRed(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "g+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateGreen(90-rotation_deg)
+                reIndexGreen(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateGreen(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "g-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateGreen(rotation_deg-90)
+                reIndexGreen(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateGreen(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "y+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateYellow(90-rotation_deg)
+                reIndexYellow(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateYellow(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "y-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateYellow(rotation_deg-90)
+                reIndexYellow(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateYellow(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "o+":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateOrange(90-rotation_deg)
+                reIndexOrange(1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateOrange(ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+        elif rotating_col == "o-":
+            if rotation_deg + ROTATION_SPEED * time.dt >= 90:
+                rotateOrange(rotation_deg-90)
+                reIndexOrange(-1)
+                rotating = False
+                rotation_deg = 0
+            else:
+                rotateOrange(-ROTATION_SPEED * time.dt)
+                rotation_deg += ROTATION_SPEED * time.dt
+
 def input(key):
-    if key == 'w':
-        rotateYellow(1)
-    elif key == 's':
-        rotateYellow(-1)
-    elif key == 'a':
-        rotateBlue(1)
-    elif key == 'd':
-        rotateBlue(-1)
-    elif key == 'e':
-        rotateWhite(1)
-    elif key == 'q':
-        rotateWhite(-1)
-    elif key == 'j':
-        rotateGreen(1)
-    elif key == 'l':
-        rotateGreen(-1)
-    elif key == 'i':
-        rotateOrange(1)
-    elif key == 'k':
-        rotateOrange(-1)
-    elif key == 'u':
-        rotateRed(1)
-    elif key == 'o':
-        rotateRed(-1)
-    elif key == "up arrow":
+    global rotating
+    global rotating_col
+    if key == "up arrow":
         cube[1][1][1].rotation_x += 45
     elif key == "down arrow":
         cube[1][1][1].rotation_x -= 45
@@ -69,6 +166,54 @@ def input(key):
         cube[1][1][1].rotation_y += 45
     elif key == "right arrow":
         cube[1][1][1].rotation_y -= 45
+    elif key == "w":
+        if not rotating:
+            rotating_col = "w+"
+            rotating = True
+    elif key == "s":
+        if not rotating:
+            rotating_col = "w-"
+            rotating = True
+    elif key == "r":
+        if not rotating:
+            rotating_col = "r+"
+            rotating = True
+    elif key == "f":
+        if not rotating:
+            rotating_col = "r-"
+            rotating = True
+    elif key == "t":
+        if not rotating:
+            rotating_col = "b+"
+            rotating = True
+    elif key == "g":
+        if not rotating:
+            rotating_col = "b-"
+            rotating = True
+    elif key == "e":
+        if not rotating:
+            rotating_col = "g+"
+            rotating = True
+    elif key == "d":
+        if not rotating:
+            rotating_col = "g-"
+            rotating = True
+    elif key == "y":
+        if not rotating:
+            rotating_col = "y+"
+            rotating = True
+    elif key == "h":
+        if not rotating:
+            rotating_col = "y-"
+            rotating = True
+    elif key == "u":
+        if not rotating:
+            rotating_col = "o+"
+            rotating = True
+    elif key == "j":
+        if not rotating:
+            rotating_col = "o-"
+            rotating = True
 
 def rotateYellow(scale: int):
     global cube
@@ -76,11 +221,13 @@ def rotateYellow(scale: int):
         for piece in line:
             if piece != cube[0][1][1]:
                 piece.world_parent = cube[0][1][1]
-    cube[0][1][1].rotation_x += scale * 90
+    cube[0][1][1].rotation_x += scale * 1
     for line in cube[0]:
         for piece in line:
             piece.world_parent = cube[1][1][1]
 
+def reIndexYellow(scale: int):
+    global cube
     #rearrange cube indices
     #Anti-clockwise -> transpose then reverse
     #Clockwise -> reverse then transpose
@@ -95,11 +242,13 @@ def rotateWhite(scale: int):
         for piece in line:
             if piece != cube[2][1][1]:
                 piece.world_parent = cube[2][1][1]
-    cube[2][1][1].rotation_x += scale * 90
+    cube[2][1][1].rotation_x += scale * 1
     for line in cube[2]:
         for piece in line:
             piece.world_parent = cube[1][1][1]
 
+def reIndexWhite(scale: int):
+    global cube
     #rearrange cube indices
     #Anti-clockwise -> transpose then reverse
     #Clockwise -> reverse then transpose
@@ -114,11 +263,13 @@ def rotateBlue(scale: int):
         for k in range(3):
             if i != 1 or k != 1:
                 cube[i][k][0].world_parent = cube[1][1][0]
-    cube[1][1][0].rotation_z -= scale * 90
+    cube[1][1][0].rotation_z -= scale * 1
     for i in range(3):
         for k in range(3):
             cube[i][k][0].world_parent = cube[1][1][1]
     
+def reIndexBlue(scale: int):
+    global cube
     # make cube[0] the blue face
     cube[0] = list(list(x) for x in zip(*cube[0]))
     cube[1] = list(list(x) for x in zip(*cube[1]))
@@ -143,11 +294,13 @@ def rotateGreen(scale: int):
         for k in range(3):
             if i != 1 or k != 1:
                 cube[i][k][2].world_parent = cube[1][1][2]
-    cube[1][1][2].rotation_z -= scale * 90
+    cube[1][1][2].rotation_z -= scale * 1
     for i in range(3):
         for k in range(3):
             cube[i][k][2].world_parent = cube[1][1][1]
     
+def reIndexGreen(scale: int):
+    global cube
     # make cube[2] the green face
     cube[0] = list(list(x) for x in zip(*cube[0]))
     cube[1] = list(list(x) for x in zip(*cube[1]))
@@ -172,11 +325,13 @@ def rotateOrange(scale: int):
         for k in range(3):
             if i != 1 or k != 1:
                 cube[i][0][k].world_parent = cube[1][0][1]
-    cube[1][0][1].rotation_y += scale * 90
+    cube[1][0][1].rotation_y += scale * 1
     for i in range(3):
         for k in range(3):
             cube[i][0][k].world_parent = cube[1][1][1]
     
+def reIndexOrange(scale: int):
+    global cube
     #make cube[0] the orange face
     cube = list(list(x) for x in zip(*cube)) 
 
@@ -195,11 +350,13 @@ def rotateRed(scale: int):
         for k in range(3):
             if i != 1 or k != 1:
                 cube[i][2][k].world_parent = cube[1][2][1]
-    cube[1][2][1].rotation_y += scale * 90
+    cube[1][2][1].rotation_y += scale * 1
     for i in range(3):
         for k in range(3):
             cube[i][2][k].world_parent = cube[1][1][1]
     
+def reIndexRed(scale: int):
+    global cube
     #make cube[2] the red face
     cube = list(list(x) for x in zip(*cube)) 
 
@@ -211,8 +368,5 @@ def rotateRed(scale: int):
     
     #revert
     cube = list(list(x) for x in zip(*cube)) 
-    
-#smooth rotations check
-    #does this shit work?
 
 app.run()
