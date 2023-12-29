@@ -212,5 +212,7 @@ def rotateRed(scale: int):
     #revert
     cube = list(list(x) for x in zip(*cube)) 
     
+#smooth rotations check
+    #does this shit work?
 
 app.run()
