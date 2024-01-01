@@ -83,8 +83,6 @@ class Cube:
                                                                                                                                                                                                                                                                 self.cube[1][0][0], self.cube[1][1][0], self.cube[1][2][0], 
                                                                                                                                                                                                                                                                 self.cube[5][0][0], self.cube[5][1][0], self.cube[5][2][0])
         
-
-
 cube = Cube()
 
 cube.rotateFace(5, -1)
