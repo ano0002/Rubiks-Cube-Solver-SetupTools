@@ -5,7 +5,7 @@ ROTATION_SPEED = 200
 app = Ursina()
 
 class GUICube():
-    def __init__(self):
+    def __init__(self) -> None:
         cubepiece = Entity(model='cube', color=color.black)
         blueplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=-0.5, color=color.blue, parent=cubepiece)
         yellowplate = Entity(model="cube", scale_x=0.1, scale_y=0.9, scale_z=0.9, x=-0.5, color=color.yellow, parent=cubepiece)
@@ -38,7 +38,7 @@ class GUICube():
         self.rotating_col = None
         self.rotation_deg = 0
 
-    def rotateYellow(self, scale: int):
+    def rotateYellow(self, scale: int) -> None:
         for line in self.cube[0]:
             for piece in line:
                 if piece != self.cube[0][1][1]:
@@ -48,7 +48,7 @@ class GUICube():
             for piece in line:
                 piece.world_parent = self.cube[1][1][1]
 
-    def reIndexYellow(self, scale: int):
+    def reIndexYellow(self, scale: int) -> None:
         #rearrange cube indices
         #Anti-clockwise -> transpose then reverse
         #Clockwise -> reverse then transpose
@@ -57,7 +57,7 @@ class GUICube():
         else:
             self.cube[0] = list(list(x) for x in zip(*(self.cube[0][::-1])))
 
-    def rotateWhite(self, scale: int):
+    def rotateWhite(self, scale: int) -> None:
         for line in self.cube[2]:
             for piece in line:
                 if piece != self.cube[2][1][1]:
@@ -67,7 +67,7 @@ class GUICube():
             for piece in line:
                 piece.world_parent = self.cube[1][1][1]
 
-    def reIndexWhite(self, scale: int):
+    def reIndexWhite(self, scale: int) -> None:
         #rearrange cube indices
         #Anti-clockwise -> transpose then reverse
         #Clockwise -> reverse then transpose
@@ -76,7 +76,7 @@ class GUICube():
         else:
             self.cube[2] = list(list(x) for x in zip(*(self.cube[2][::-1])))
 
-    def rotateBlue(self, scale: int):
+    def rotateBlue(self, scale: int) -> None:
         for i in range(3):
             for k in range(3):
                 if i != 1 or k != 1:
@@ -86,7 +86,7 @@ class GUICube():
             for k in range(3):
                 self.cube[i][k][0].world_parent = self.cube[1][1][1]
         
-    def reIndexBlue(self, scale: int):
+    def reIndexBlue(self, scale: int) -> None:
         # make cube[0] the blue face
         self.cube[0] = list(list(x) for x in zip(*self.cube[0]))
         self.cube[1] = list(list(x) for x in zip(*self.cube[1]))
@@ -105,7 +105,7 @@ class GUICube():
         self.cube[1] = list(list(x) for x in zip(*self.cube[1]))
         self.cube[2] = list(list(x) for x in zip(*self.cube[2]))
 
-    def rotateGreen(self, scale: int):
+    def rotateGreen(self, scale: int) -> None:
         for i in range(3):
             for k in range(3):
                 if i != 1 or k != 1:
@@ -115,7 +115,7 @@ class GUICube():
             for k in range(3):
                 self.cube[i][k][2].world_parent = self.cube[1][1][1]
         
-    def reIndexGreen(self, scale: int):
+    def reIndexGreen(self, scale: int) -> None:
         # make cube[2] the green face
         self.cube[0] = list(list(x) for x in zip(*self.cube[0]))
         self.cube[1] = list(list(x) for x in zip(*self.cube[1]))
@@ -134,7 +134,7 @@ class GUICube():
         self.cube[1] = list(list(x) for x in zip(*self.cube[1]))
         self.cube[2] = list(list(x) for x in zip(*self.cube[2]))
 
-    def rotateOrange(self, scale: int):
+    def rotateOrange(self, scale: int) -> None:
         for i in range(3):
             for k in range(3):
                 if i != 1 or k != 1:
@@ -144,7 +144,7 @@ class GUICube():
             for k in range(3):
                 self.cube[i][0][k].world_parent = self.cube[1][1][1]
         
-    def reIndexOrange(self, scale: int):
+    def reIndexOrange(self, scale: int) -> None:
         #make cube[0] the orange face
         self.cube = list(list(x) for x in zip(*self.cube)) 
 
@@ -157,7 +157,7 @@ class GUICube():
         #revert
         self.cube = list(list(x) for x in zip(*self.cube)) 
 
-    def rotateRed(self, scale: int):
+    def rotateRed(self, scale: int) -> None:
         for i in range(3):
             for k in range(3):
                 if i != 1 or k != 1:
@@ -167,7 +167,7 @@ class GUICube():
             for k in range(3):
                 self.cube[i][2][k].world_parent = self.cube[1][1][1]
         
-    def reIndexRed(self, scale: int):
+    def reIndexRed(self, scale: int) -> None:
         #make cube[2] the red face
         self.cube = list(list(x) for x in zip(*self.cube)) 
 
@@ -180,31 +180,31 @@ class GUICube():
         #revert
         self.cube = list(list(x) for x in zip(*self.cube)) 
     
-    def rotateCubeUp(self):
+    def rotateCubeUp(self) -> None:
         self.cube[1][1][1].rotation_x += 45
     
-    def rotateCubeDown(self):
+    def rotateCubeDown(self) -> None:
         self.cube[1][1][1].rotation_x -= 45
     
-    def rotateCubeLeft(self):
+    def rotateCubeLeft(self) -> None:
         self.cube[1][1][1].rotation_y += 45
 
-    def rotateCubeRight(self):
+    def rotateCubeRight(self) -> None:
         self.cube[1][1][1].rotation_y -= 45
 
-    def enableRotation(self):
+    def enableRotation(self) -> None:
         self.rotating = True
     
-    def disableRotation(self):
+    def disableRotation(self) -> None:
         self.rotating = False
     
-    def editRotationDeg(self, deg:int):
+    def editRotationDeg(self, deg:int) -> None:
         self.rotation_deg += deg
     
-    def resetRotationDeg(self):
+    def resetRotationDeg(self) -> None:
         self.rotation_deg = 0
     
-    def editRotationCol(self, col: str):
+    def editRotationCol(self, col:str) -> None:
         self.rotating_col = col
 
 guiCube = GUICube()

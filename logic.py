@@ -1,14 +1,21 @@
 class Cube:
-    def __init__(self) -> None:
-        self.cube = [[[0,0,0],[0,0,0],[0,0,0]],[[1,1,1],[1,1,1],[1,1,1]],[[2,2,2],[2,2,2],[2,2,2]],[[3,3,3],[3,3,3],[3,3,3]], [[4,4,4],[4,4,4],[4,4,4]], [[5,5,5],[5,5,5],[5,5,5]]]
+    def __init__(self, state:list=None) -> None:
+        if state == None:
+            self.cube = [[[0,0,0],[0,0,0],[0,0,0]],[[1,1,1],[1,1,1],[1,1,1]],[[2,2,2],[2,2,2],[2,2,2]],[[3,3,3],[3,3,3],[3,3,3]], [[4,4,4],[4,4,4],[4,4,4]], [[5,5,5],[5,5,5],[5,5,5]]]
         #WRBOGY
         #012345
+        # Each 2d array is the colours of a face, rather than the cubepieces.
+        else:
+            self.cube = state
     
     def __str__(self) -> str:
         return str(self.cube)
 
-    def rotateFace(self, face: int, dir: int):
-        if dir == 1:
+    def getState(self) -> list:
+        return self.cube
+
+    def rotateFace(self, face: int, dir: int) -> None:
+        if dir == 1: # 1 is anticlockwise, -1 is clockwise
             self.cube[face] = list(list(x) for x in zip(*self.cube[face]))[::-1]
         elif dir == -1:
             self.cube[face] = list(list(x) for x in zip(*self.cube[face][::-1]))
