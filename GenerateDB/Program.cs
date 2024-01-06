@@ -22,7 +22,7 @@ class Generator{
             System.Console.WriteLine("DEPTH REACHED: " + depth);
             System.Console.WriteLine("Total time elapsed: " + (DateTimeOffset.UtcNow.ToUnixTimeSeconds()-timeStamp) + "s");
             int layerSize = queue.Count();
-            while (layerSize-- != 0){
+            while (layerSize != 0){
                 CornerCube cube = queue.Dequeue();
                 string key = cube.generateKey();
                 if (!dict.ContainsKey(key)){
