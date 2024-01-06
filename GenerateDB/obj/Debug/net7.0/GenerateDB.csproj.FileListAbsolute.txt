@@ -13,3 +13,5 @@ C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Ret
 C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.pdb
 C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.genruntimeconfig.cache
 C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\ref\GenerateDB.dll
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\Json.Net.dll
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.csproj.CopyComplete

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ahwj9CGM85XkQVsKRTuv0ywl+2Di6JRlG3GSmeJhGrTF2uETE75OutG5R0Yr1146USH7fpWfyq79huHi46AC3w==",
+  "dgSpecHash": "+wnNJggrwTSvSzQBkxWS128JshLz5XpGorbRwKviWK26x8QWJ5mWedF2O6wHuVe61c8FE/5a+k/wle320Y9qpg==",
   "success": true,
   "projectFilePath": "C:\\Users\\recke\\OneDrive - Hills Road Sixth Form College\\Computer Science\\NEA Retry\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\recke\\.nuget\\packages\\json.net\\1.0.33\\json.net.1.0.33.nupkg.sha512"
+  ],
   "logs": []
 }

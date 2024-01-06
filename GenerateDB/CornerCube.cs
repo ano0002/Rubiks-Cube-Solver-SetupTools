@@ -1,15 +1,23 @@
 class CornerCube{
     private int[,,] corners;
-    public CornerCube(){
-        this.corners = new int[6,2,2];
-        for (int i = 0; i < 6; i++)
-        {
-            for (int j = 0; j < 2; j++)
+    public CornerCube(int[,,] state = null){
+        if (state is null){
+            this.corners = new int[6,2,2];
+            for (int i = 0; i < 6; i++)
             {
-                corners[i,j,0] = i;
-                corners[i,j,1] = i;
+                for (int j = 0; j < 2; j++)
+                {
+                    corners[i,j,0] = i;
+                    corners[i,j,1] = i;
+                }
             }
+        }else{
+            this.corners = state;
         }
+    }
+
+    public int[,,] getState(){
+        return this.corners;
     }
 
     public string generateKey(){
