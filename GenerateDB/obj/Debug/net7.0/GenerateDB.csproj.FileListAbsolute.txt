@@ -1,0 +1,15 @@
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\GenerateDB.exe
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\GenerateDB.deps.json
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\GenerateDB.runtimeconfig.json
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\GenerateDB.dll
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\bin\Debug\net7.0\GenerateDB.pdb
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.csproj.AssemblyReference.cache
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.AssemblyInfoInputs.cache
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.AssemblyInfo.cs
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.csproj.CoreCompileInputs.cache
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.dll
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\refint\GenerateDB.dll
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.pdb
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\GenerateDB.genruntimeconfig.cache
+C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\obj\Debug\net7.0\ref\GenerateDB.dll
