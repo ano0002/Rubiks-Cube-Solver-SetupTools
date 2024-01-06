@@ -9,14 +9,14 @@ class Generator{
         CornerCube cube = new CornerCube();
         Queue<CornerCube> queue = new Queue<CornerCube>(); 
         queue.Enqueue(cube);
-        Dictionary<string, byte> cornerDict = new Dictionary<string, byte>();
-        BFS(queue, ref cornerDict);
+        Dictionary<string, byte> cornerDict = BFS(queue);
         string json = JsonSerializer.Serialize(cornerDict);
         File.WriteAllText(@"C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\cornerDict.json", json);
     }
 
-    public static void BFS(Queue<CornerCube> queue, ref Dictionary<string, byte> dict){
+    public static Dictionary<string, byte> BFS(Queue<CornerCube> queue){
         byte depth = 0;
+        Dictionary<string, byte> dict = new Dictionary<string, byte>();
         long timeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         while (queue.Count() != 0){
             System.Console.WriteLine("DEPTH REACHED: " + depth);
@@ -42,6 +42,10 @@ class Generator{
                 layerSize--;
             }
             depth++;
+            // if (depth == 8){
+            //     break;
+            // }
         }
+        return dict;
     }
 }
