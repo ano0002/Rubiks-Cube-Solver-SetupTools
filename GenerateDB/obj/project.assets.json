@@ -38,11 +38,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\recke\\OneDrive - Hills Road Sixth Form College\\Computer Science\\NEA Retry\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
+      "projectUniqueName": "C:\\Users\\recke\\Documents\\GitHub\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
       "projectName": "GenerateDB",
-      "projectPath": "C:\\Users\\recke\\OneDrive - Hills Road Sixth Form College\\Computer Science\\NEA Retry\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
+      "projectPath": "C:\\Users\\recke\\Documents\\GitHub\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
       "packagesPath": "C:\\Users\\recke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\recke\\OneDrive - Hills Road Sixth Form College\\Computer Science\\NEA Retry\\Rubiks-Cube-Solver\\GenerateDB\\obj\\",
+      "outputPath": "C:\\Users\\recke\\Documents\\GitHub\\Rubiks-Cube-Solver\\GenerateDB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\recke\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -85,12 +85,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

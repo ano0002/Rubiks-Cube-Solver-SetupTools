@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "+wnNJggrwTSvSzQBkxWS128JshLz5XpGorbRwKviWK26x8QWJ5mWedF2O6wHuVe61c8FE/5a+k/wle320Y9qpg==",
+  "dgSpecHash": "IeAQCwQzZ2GFDZuQ2Litg+CSvsS/HGs1K18AZQCgoYVU/yUFN3Y/4Wmx8itBAUyn51ADn2PLtpzDpimyCCZH/Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\recke\\OneDrive - Hills Road Sixth Form College\\Computer Science\\NEA Retry\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
+  "projectFilePath": "C:\\Users\\recke\\Documents\\GitHub\\Rubiks-Cube-Solver\\GenerateDB\\GenerateDB.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\recke\\.nuget\\packages\\json.net\\1.0.33\\json.net.1.0.33.nupkg.sha512"
+    "C:\\Users\\recke\\.nuget\\packages\\json.net\\1.0.33\\json.net.1.0.33.nupkg.sha512",
+    "C:\\Users\\recke\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\recke\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\recke\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\recke\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }
