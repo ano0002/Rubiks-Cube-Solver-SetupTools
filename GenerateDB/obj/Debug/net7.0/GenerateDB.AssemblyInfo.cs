@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GenerateDB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba09bde385b1db70817e78767d6d6d61da4f4c51")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("GenerateDB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GenerateDB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
