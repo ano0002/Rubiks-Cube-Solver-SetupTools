@@ -11,7 +11,7 @@ class Generator{
         queue.Enqueue(cube);
         Dictionary<string, byte> cornerDict = BFS(queue);
         string json = JsonSerializer.Serialize(cornerDict);
-        File.WriteAllText(@"C:\Users\recke\OneDrive - Hills Road Sixth Form College\Computer Science\NEA Retry\Rubiks-Cube-Solver\GenerateDB\cornerDict.json", json);
+        File.WriteAllText(@"C:\Users\recke\Documents\GitHub\Rubiks-Cube-Solver\GenerateDB\cornerDict.json", json);
     }
 
     public static Dictionary<string, byte> BFS(Queue<CornerCube> queue){
