@@ -42,9 +42,9 @@ class Generator{
                 layerSize--;
             }
             depth++;
-            // if (depth == 8){
-            //     break;
-            // }
+            if (depth == 8){
+                break;
+            }
         }
         return dict;
     }
