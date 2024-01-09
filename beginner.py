@@ -61,7 +61,7 @@ class BeginnerSolver:
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    if not(j == k or j == k-2 or k == j-2):
+                    if abs(j-k) == 1:
                         if cubeState[i][j][k] == 0:
                             whiteEdgeCoords.put((i,j,k))
         
