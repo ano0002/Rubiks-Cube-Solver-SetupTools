@@ -106,8 +106,6 @@ def getRandomScramble(moves: int) -> Cube:
     for i in range(moves):
         dir = random.randint(0, 1)
         face = random.randint(0, 5)
-        dir = 1
-        face = 1
         if dir == 0:
             cube.rotateFace(face, 1)
         else:
