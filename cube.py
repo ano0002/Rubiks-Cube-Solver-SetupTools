@@ -23,6 +23,18 @@ class Cube:
         for i in range(6):
             out += str(self.cube[i][0][0]) + str(self.cube[i][0][2]) + str(self.cube[i][2][0]) + str(self.cube[i][2][2])
         return out
+    
+    def generateKey(self) -> str:
+        #WRBOGY
+        outStr = ""
+        array = self.getState()
+        for i in range(6):
+            for j in range(3):
+                for k in range(3):
+                    if not j == k == 1:
+                        outStr += array[i][j][k]
+        
+        return outStr
 
     def rotateFace(self, face: int, dir: int) -> None:
         if dir == 1: # 1 is anticlockwise, -1 is clockwise

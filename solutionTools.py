@@ -151,13 +151,11 @@ class ifCubeGen:
                 adjCorner = (corner - 3) % 2 + 2
             adjCols.append(self.cube.getState()[adjFace][coordsList[adjCorner][0]][coordsList[adjCorner][1]])
 
-        print(adjCols)
-        adjCols.sort()
 
+        adjCols.sort()
         col = self.cube.getState()[coords[0]][coords[1]][coords[2]]
         key = str(col) + str(adjCols[0]) + str(adjCols[1])
         target = self.cornerCoordsDict[key]
-        print(self.mappings[int(target[0])] + str(3*int(target[1])+int(target[2])))
         return self.mappings[int(target[0])] + str(3*int(target[1])+int(target[2]))
     
 class SolverTools:
