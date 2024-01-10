@@ -50,7 +50,7 @@ class Thistlethwaite:
             lowerbound = tableMaxDepth + 1
         
         if lowerbound == 0:
-            return solution
+            return solution.strip()
         if lowerbound > depthRemaining:
             return None
 
