@@ -8,17 +8,16 @@ class GeneratePruningTable:
     m = Masker()
     masks = Masks()
     # All moves
-    validMoves = [(0,1,1), (0,-1,1), (1,1,1), (1,-1,1), (2,1,1), (2,-1,1), (3,1,1), (3,-1,1), (4,1,1), (4,-1,1), (5,1,1), (5,-1,1)]
+    validMoves = [(0,1,1), (0,-1,1), (0,1,2), (1,1,1), (1,-1,1), (1,1,2), (2,1,1), (2,-1,1), (2,1,2), (3,1,1), (3,-1,1), (3,1,2), (4,1,1), (4,-1,1), (4,1,2), (5,1,1), (5,-1,1), (5,1,2)]
     def __init__(self):
         pass
     
     def setMovesG0(self):
         # All moves
-        self.validMoves = [(0,1,1), (0,-1,1), (1,1,1), (1,-1,1), (2,1,1), (2,-1,1), (3,1,1), (3,-1,1), (4,1,1), (4,-1,1), (5,1,1), (5,-1,1)]
+        self.validMoves = [(0,1,1), (0,-1,1), (0,1,2), (1,1,1), (1,-1,1), (1,1,2), (2,1,1), (2,-1,1), (2,1,2), (3,1,1), (3,-1,1), (3,1,2), (4,1,1), (4,-1,1), (4,1,2), (5,1,1), (5,-1,1), (5,1,2)]
 
     def setMovesG1(self):
         #U, F2, R, B2, L, D
-        # Also must now include U2 etc. as not entire tree searched
         self.validMoves = [(0,1,1), (0,-1,1), (0,1,2), (1,1,2), (2,1,1), (2,-1,1), (2,1,2), (3,1,2), (4,1,1), (4,-1,1), (4,1,2), (5,1,1), (5,-1,1), (5,1,2)]
 
     def BFS(self, start: Cube, max_depth: int=8) -> dict:
@@ -66,3 +65,5 @@ class GeneratePruningTable:
         with open(directory, "w") as f:
             json.dump(table, f)
 
+g = GeneratePruningTable()
+g.genG0()
