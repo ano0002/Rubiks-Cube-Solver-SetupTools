@@ -8,14 +8,18 @@ class Thistlethwaite:
     def __init__(self):
         pass
 
-    def genMaskedCube(self, cube: Cube, mask: list) -> Cube:
-        pass
-
-    def DFS(self, cube: Cube, solution: str, depthRemaining: int) -> str:
+    def DFS(self, cube: Cube, solution: str, depthRemaining: int, table: dict, tableMaxDepth: int) -> str:
         if self.solver.isSolved(cube):
             return solution.strip()
-        if depthRemaining == 0:
+        
+        try:
+            lowerbound = table[cube.generateKey()]
+        except:
+            lowerbound = tableMaxDepth + 1
+        
+        if lowerbound > depthRemaining:
             return None
+
         for move in self.validMoves:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
@@ -26,9 +30,9 @@ class Thistlethwaite:
                 return result
         return None
     
-    def IDDFS(self, cube: Cube, max_depth=5):
+    def IDDFS(self, cube: Cube, table: dict, tableMaxDepth:int, max_depth: int=5) -> str:
         for depth in range(max_depth):
-            solution = self.DFS(cube, "", depth + 1)
+            solution = self.DFS(cube, "", depth + 1, table, tableMaxDepth)
             if solution is not None:
                 return solution
         else:
@@ -39,5 +43,4 @@ cube = getRandomScramble(5)
 
 t = Thistlethwaite()
 
-print(t.IDDFS(cube, 5))
 

@@ -2,33 +2,18 @@ from cube import *
 from solutionTools import *
 from queue import Queue
 import json
-
-class Masker:
-    def __init__(self):
-        pass
-
-    def mask(self, cube: Cube, mask: list, maskTo: list, defaultMask: str="X") -> Cube:
-        ifCube = ifCubeGen(cube).constructIFCube().getState()
-        outCube = Cube().getState()
-        for i in range(6):
-            for j in range(3):
-                for k in range(3):
-                    if ifCube[i][j][k] in mask:
-                        outCube[i][j][k] = maskTo[mask.index(ifCube[i][j][k])]
-                    else:
-                        outCube[i][j][k] = defaultMask
-        
-        return Cube(state=outCube)
+import copy
     
 class GeneratePruningTable:
     def __init__(self):
         pass
 
-    def BFS(self, start: Cube) -> dict:
+    def BFS(self, start: Cube, max_depth: int=8) -> dict:
         queue: Queue[Cube] = Queue()
         depth = 0
         table = {}
         queue.put(start)
+        cube: Cube = None
         while queue.qsize() > 0:
             layer_size = queue.qsize()
             while layer_size > 0:
@@ -38,7 +23,7 @@ class GeneratePruningTable:
                     table[key] = depth
                     for i in range(6):
                         for j in range(2):
-                            newCube = Cube(state=list(cube.getState()))
+                            newCube = Cube(state=copy.deepcopy(cube.getState()))
                             if j == 0:
                                 dir = 1
                             else:
@@ -47,25 +32,24 @@ class GeneratePruningTable:
                             queue.put(Cube(state=newCube.getState().copy()))
                 layer_size -= 1
             print(f"Depth {depth} complete")
+            if depth == max_depth:
+                break
             depth += 1
         return table
+    
+    def genG0(self):
+        m = Masker()
+        masks = Masks()
+        g0from, g0to = masks.getG0Mask()
+        maskedCube = m.mask(Cube(), g0from, g0to)
+        table = self.BFS(maskedCube, max_depth=100)
+        print(len(table))
+        self.writeTableToFile(table, r"Data\G0.json")
     
     def writeTableToFile(self, table: dict, directory: str):
         with open(directory, "w") as f:
             json.dump(table, f)
 
-cube = Cube()
+g = GeneratePruningTable()
 
-mask = ["U0"]
-maskTo = ["U"]
-
-m = Masker()
-masked = m.mask(cube, mask, maskTo)
-#masked.rotateFace(4, 1)
-
-#print(masked.generateKey())
-
-gen = GeneratePruningTable()
-
-table = gen.BFS(masked)
-gen.writeTableToFile(table, r"testDB.json")
+g.genG0()

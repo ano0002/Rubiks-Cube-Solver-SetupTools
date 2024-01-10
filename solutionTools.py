@@ -1,6 +1,23 @@
 from cube import *
 import json
 
+class Masker:
+    def __init__(self):
+        pass
+
+    def mask(self, cube: Cube, mask: list, maskTo: list, defaultMask: str="X") -> Cube:
+        ifCube = ifCubeGen(cube).constructIFCube().getState()
+        outCube = Cube().getState()
+        for i in range(6):
+            for j in range(3):
+                for k in range(3):
+                    if ifCube[i][j][k] in mask:
+                        outCube[i][j][k] = maskTo[mask.index(ifCube[i][j][k])]
+                    else:
+                        outCube[i][j][k] = defaultMask
+        
+        return Cube(state=outCube)
+
 class ifCubeGen:
     mappings = {
         0 : "U",
@@ -13,10 +30,10 @@ class ifCubeGen:
 
     def __init__(self, cube: Cube):
         self.cube = cube
-        with open("edgecoords.json", "r") as f:
+        with open(r"Data\edgecoords.json", "r") as f:
             self.edgeCoordsDict = json.load(f)
         
-        with open("cornercoords.json", "r") as f:
+        with open(r"Data\cornercoords.json", "r") as f:
             self.cornerCoordsDict = json.load(f)
     
     def constructIFCube(self) -> Cube:
@@ -165,3 +182,13 @@ class SolverTools:
         
     def isSolved(self, cube: Cube) -> bool:
         return self.solvedCube.getState() == cube.getState()
+  
+class Masks:
+    def __init__(self):
+        pass
+    
+    def getG0Mask(self) -> list:
+        mask = ["U1", "U3", "U5", "U7", "F3", "F5", "B3", "B5",  "D1", "D3", "D5", "D7"]
+        maskTo = ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O"]
+
+        return mask, maskTo
