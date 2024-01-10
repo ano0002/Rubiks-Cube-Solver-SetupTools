@@ -192,3 +192,9 @@ class Masks:
         maskTo = ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O"]
 
         return mask, maskTo
+    
+    def getG1Mask(self) -> list:
+        mask = ["U0", "U1", "U2", "U3", "U5", "U6", "U7", "U8", "F3", "F5", "B3", "B5", "D0", "D1", "D2", "D3", "D5", "D6", "D7", "D8"]
+        maskTo = ["O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "P", "P", "O", "O", "O", "O", "O", "O", "O", "O"]
+
+        return mask, maskTo
