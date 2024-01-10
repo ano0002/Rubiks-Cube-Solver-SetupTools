@@ -64,6 +64,3 @@ class GeneratePruningTable:
     def writeTableToFile(self, table: dict, directory: str):
         with open(directory, "w") as f:
             json.dump(table, f)
-
-g = GeneratePruningTable()
-g.genG0()
