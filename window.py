@@ -1,8 +1,8 @@
 from ursina import *
 
-ROTATION_SPEED = 200
+ROTATION_SPEED = 300
 
-app = Ursina()
+app = Ursina(development_mode=True)
 
 class GUICube():
     def __init__(self) -> None:
