@@ -26,7 +26,7 @@ class Cube:
             for j in range(3):
                 for k in range(3):
                     if not j == k == 1:
-                        outStr += array[i][j][k]
+                        outStr += str(array[i][j][k])
         
         return outStr
 

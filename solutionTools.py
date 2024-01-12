@@ -6,7 +6,7 @@ class Masker:
         pass
 
     def mask(self, cube: Cube, mask: list, maskTo: list, defaultMask: str="X") -> Cube:
-        ifCube = ifCubeGen(cube).constructIFCube().getState()
+        ifCube = ICubeGen(cube).constructICube().getState()
         outCube = Cube().getState()
         for i in range(6):
             for j in range(3):
@@ -18,7 +18,7 @@ class Masker:
         
         return Cube(state=outCube)
 
-class ifCubeGen:
+class ICubeGen:
     mappings = {
         0 : "U",
         1 : "F",
@@ -36,7 +36,7 @@ class ifCubeGen:
         with open(r"Data\cornercoords.json", "r") as f:
             self.cornerCoordsDict = json.load(f)
     
-    def constructIFCube(self) -> Cube:
+    def constructICube(self) -> Cube:
         ifcubearray = Cube().getState()
         for i in range(6):
             for j in range(3):
@@ -202,5 +202,11 @@ class Masks:
     def getG2CornerMask(self) -> list:
         mask = ["U0", "U2", "U6", "U8", "F0", "F2", "F6", "F8", "R0", "R2", "R6", "R8", "B0", "B2", "B6", "B8", "L0", "L2", "L6", "L8", "D0", "D2", "D6", "D8"]
         maskTo = ["U", "U", "U", "U", "F", "F", "F", "F", "R", "R", "R", "R", "B", "B", "B", "B", "L", "L", "L", "L", "D", "D", "D", "D"]
+
+        return mask, maskTo
+    
+    def getG2Mask(self) -> list:
+        mask = ["U0", "U2", "U6", "U8", "F0", "F2", "F6", "F8", "R0", "R2", "R6", "R8", "B0", "B2", "B6", "B8", "L0", "L2", "L6", "L8", "D0", "D2", "D6", "D8", "U1", "U3", "U5", "U7", "F1", "F3", "F5", "F7", "R1", "R3", "R5", "R7", "B1", "B3", "B5", "B7", "L1", "L3", "L5", "L7", "D1", "D3", "D5", "D7"]
+        maskTo = ["U", "U", "U", "U", "F", "F", "F", "F", "R", "R", "R", "R", "B", "B", "B", "B", "L", "L", "L", "L", "D", "D", "D", "D", "U", "U", "U", "U", "F", "F", "F", "F", "R", "R", "R", "R", "F", "F", "F", "F", "R", "R", "R", "R", "U", "U", "U", "U"]
 
         return mask, maskTo

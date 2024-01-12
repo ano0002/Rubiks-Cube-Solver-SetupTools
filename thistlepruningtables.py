@@ -107,15 +107,42 @@ class GeneratePruningTable:
         self.writeListToFile(list, r"Data\G2Corners.json")
 
     def genG2(self):
+        mappings = {
+            0 : "U",
+            1 : "F",
+            2 : "R",
+            3 : "F",
+            4 : "R",
+            5 : "U"
+        }
+
         self.setMovesG2()
         with open(r"Data\G2Corners.json", "r") as f:
             stateList: list = json.load(f)
+        
+        # Add edge colours to the masks (convert mask from G2CornerPerm -> G2Mask for all solved G2 cubes)
+        for state in stateList:
+            for i in range(6):
+                for j in range(3):
+                    for k in range(3):
+                        if abs(j-k) == 1:
+                            state[i][j][k] = mappings[i]
+
+        # Turn into cube objects
         cubeList = []
         for state in stateList:
             cubeList.append(Cube(state=state))
-        table = self.BFS(None, 7, customStart=cubeList)
+        
+        # Custom BFS search where first layer = all solved masked cube states
+        table = self.BFS(None, 6, customStart=cubeList)
         print(len(table))
         self.writeTableToFile(table, r"Data\G2.json")
+
+    def genG3(self):
+        self.setMovesG3()
+        table = self.BFS(Cube(), 10)
+        print(len(table))
+        self.writeTableToFile(table, r"Data\G3.json")
 
     def writeListToFile(self, list: list, directory: str):
         with open(directory, "w") as f:
@@ -125,6 +152,3 @@ class GeneratePruningTable:
         with open(directory, "w") as f:
             json.dump(table, f)
     
-
-g = GeneratePruningTable()
-g.genG2()
