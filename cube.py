@@ -17,12 +17,6 @@ class Cube:
 
     def getState(self) -> list:
         return self.cube
-
-    def getCornerCode(self) -> str:
-        out = ""
-        for i in range(6):
-            out += str(self.cube[i][0][0]) + str(self.cube[i][0][2]) + str(self.cube[i][2][0]) + str(self.cube[i][2][2])
-        return out
     
     def generateKey(self) -> str:
         #WRBOGY
