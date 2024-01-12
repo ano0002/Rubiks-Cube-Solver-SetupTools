@@ -93,3 +93,4 @@ cube = t.G0(cube)
 
 cube = t.G1(cube)
 
+print(cube)

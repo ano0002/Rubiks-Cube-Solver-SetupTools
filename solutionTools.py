@@ -198,3 +198,9 @@ class Masks:
         maskTo = ["O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "P", "P", "O", "O", "O", "O", "O", "O", "O", "O"]
 
         return mask, maskTo
+    
+    def getG2CornerMask(self) -> list:
+        mask = ["U0", "U2", "U6", "U8", "F0", "F2", "F6", "F8", "R0", "R2", "R6", "R8", "B0", "B2", "B6", "B8", "L0", "L2", "L6", "L8", "D0", "D2", "D6", "D8"]
+        maskTo = ["U", "U", "U", "U", "F", "F", "F", "F", "R", "R", "R", "R", "B", "B", "B", "B", "L", "L", "L", "L", "D", "D", "D", "D"]
+
+        return mask, maskTo
