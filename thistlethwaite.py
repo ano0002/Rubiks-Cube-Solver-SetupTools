@@ -28,21 +28,31 @@ class Thistlethwaite:
         #U, F2, R, B2, L, D
         self.validMoves = [(0,1,1), (0,-1,1), (0,1,2), (1,1,2), (2,1,1), (2,-1,1), (2,1,2), (3,1,2), (4,1,1), (4,-1,1), (4,1,2), (5,1,1), (5,-1,1), (5,1,2)]
 
-    def startG0(self, cube: Cube):
+    def G0(self, cube: Cube) -> Cube:
         self.setMovesG0()
         with open(r"Data\G0.json", "r") as f:
-            self.g0Table = json.load(f)
+            g0Table = json.load(f)
         maskedCube = self.G0Mask(cube)
-        print(self.IDDFS(maskedCube, self.g0Table, 7, 10))
+        solution = self.IDDFS(maskedCube, g0Table, 7, 10)
+        for move in solution:
+            for i in range(move[2]):
+                cube.rotateFace(move[0], move[1])
+        return cube
     
-    def startG1(self):
+    def G1(self, cube: Cube) -> Cube:
         self.setMovesG1()
         with open(r"Data\G1.json", "r") as f:
-            self.g1Table = json.load(f)
+            g1Table = json.load(f)
+        maskedCube = self.G1Mask(cube)
+        solution = self.IDDFS(maskedCube, g1Table, 7, 10)
+        for move in solution:
+            for i in range(move[2]):
+                cube.rotateFace(move[0], move[1])
+        return cube
 
-    def DFS(self, cube: Cube, solution: str, depthRemaining: int, table: dict, tableMaxDepth: int) -> str:
+    def DFS(self, cube: Cube, solution: list, depthRemaining: int, table: dict, tableMaxDepth: int) -> str:
         if self.solver.isSolved(cube):
-            return solution.strip()
+            return solution
         
         try:
             lowerbound = table[cube.generateKey()]
@@ -50,14 +60,16 @@ class Thistlethwaite:
             lowerbound = tableMaxDepth + 1
         
         if lowerbound == 0:
-            return solution.strip()
+            return solution
         if lowerbound > depthRemaining:
             return None
 
         for move in self.validMoves:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
-            result = self.DFS(cube, solution + " " + str(move), depthRemaining-1, table, tableMaxDepth)
+            extSolution = solution.copy()
+            extSolution.append(move)
+            result = self.DFS(cube, extSolution, depthRemaining-1, table, tableMaxDepth)
             for i in range(move[2]):
                 cube.rotateFace(move[0], -move[1])
             if result is not None:
@@ -66,7 +78,7 @@ class Thistlethwaite:
     
     def IDDFS(self, cube: Cube, table: dict, tableMaxDepth:int, max_depth: int=10) -> str:
         for depth in range(max_depth):
-            solution = self.DFS(cube, "", depth + 1, table, tableMaxDepth)
+            solution = self.DFS(cube, [], depth + 1, table, tableMaxDepth)
             if solution is not None:
                 return solution
         else:
@@ -77,4 +89,7 @@ cube = getRandomScramble(100)
 
 t = Thistlethwaite()
 
-t.startG0(cube)
+cube = t.G0(cube)
+
+cube = t.G1(cube)
+
