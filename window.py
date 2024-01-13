@@ -1,10 +1,16 @@
 from ursina import *
+from thistlethwaite import *
+from cube import *
+from time import sleep
+from threading import Thread
 
-ROTATION_SPEED = 300
+ROTATION_SPEED = 400
 
 app = Ursina(development_mode=True)
 
 class GUICube():
+    t = Thistlethwaite()
+
     def __init__(self) -> None:
         cubepiece = Entity(model='cube', color=color.black)
         blueplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=-0.5, color=color.blue, parent=cubepiece)
@@ -206,6 +212,81 @@ class GUICube():
     
     def editRotationCol(self, col:str) -> None:
         self.rotating_col = col
+    
+    def scrambleAndSolve(self):
+        cube = getRandomScramble(100)
+        cube, sol = self.t.Solve(cube)
+        for move in sol[::-1]:
+            match move[0]:
+                case 0:
+                    if move[1] == -1:
+                        self.rotating_col = "w+"
+                    else:
+                        self.rotating_col = "w-"
+                case 1:
+                    if move[1] == -1:
+                        self.rotating_col = "r+"
+                    else:
+                        self.rotating_col = "r-"
+                case 2:
+                    if move[1] == -1:
+                        self.rotating_col = "b+"
+                    else:
+                        self.rotating_col = "b-"
+                case 3:
+                    if move[1] == -1:
+                        self.rotating_col = "o+"
+                    else:
+                        self.rotating_col = "o-"
+                case 4:
+                    if move[1] == -1:
+                        self.rotating_col = "g+"
+                    else:
+                        self.rotating_col = "g-"
+                case 5:
+                    if move[1] == -1:
+                        self.rotating_col = "y+"
+                    else:
+                        self.rotating_col = "y-"
+            self.rotating = True
+            sleep(.5)
+        sleep(3)
+        for move in sol:
+            match move[0]:
+                case 0:
+                    if move[1] == 1:
+                        self.rotating_col = "w+"
+                    else:
+                        self.rotating_col = "w-"
+                case 1:
+                    if move[1] == 1:
+                        self.rotating_col = "r+"
+                    else:
+                        self.rotating_col = "r-"
+                case 2:
+                    if move[1] == 1:
+                        self.rotating_col = "b+"
+                    else:
+                        self.rotating_col = "b-"
+                case 3:
+                    if move[1] == 1:
+                        self.rotating_col = "o+"
+                    else:
+                        self.rotating_col = "o-"
+                case 4:
+                    if move[1] == 1:
+                        self.rotating_col = "g+"
+                    else:
+                        self.rotating_col = "g-"
+                case 5:
+                    if move[1] == 1:
+                        self.rotating_col = "y+"
+                    else:
+                        self.rotating_col = "y-"
+            self.rotating = True
+            sleep(.5)
+
+            
 
 guiCube = GUICube()
 
@@ -379,6 +460,10 @@ def input(key):
         if not guiCube.rotating:
             guiCube.editRotationCol("o-")
             guiCube.enableRotation()
+    elif key == "b":
+        if not guiCube.rotating:
+            t = Thread(target=guiCube.scrambleAndSolve)
+            t.start()
 
 camera.x = 20
 camera.y = 20

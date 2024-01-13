@@ -127,17 +127,45 @@ class Thistlethwaite:
         solution += temp
         cube, temp = self.G3(cube)
         solution += temp
-        return cube, solution
+        return cube, self.compressSolution(solution)
+    
+    def compressSolution(self, solution: list) -> list:
+        newSolution = []
+        for i in range(len(solution)-1):
+            if solution[i] is not None:
+                if solution[i][0] == solution[i+1][0]:
+                    if solution[i][1] == solution[i+1][1]:
+                        if solution[i][2] + solution[i+1][2] == 3:
+                            solution[i+1] = (solution[i][0], -solution[i][1], 1)
+                        else:
+                            solution[i+1] = (solution[i][0], -solution[i][1], 2)
+                    elif solution[i][2] == solution[i+1][2]:
+                        solution[i+1] = None
+                    elif solution[i][2] > solution[i+1][2]:
+                        solution[i+1] = (solution[i][0], solution[i][1], 1)
+                    else:
+                        solution[i+1] = (solution[i][0], solution[i+1][1], 1)
+                else:
+                    newSolution.append(solution[i])
+        newSolution.append(solution[-1])
+        
+        return newSolution
 
 max = 0
 t = Thistlethwaite()
-for i in range(100):
-    cube = getRandomScramble(200)
-    cube, solution = t.Solve(cube)
-    if cube.getState()!=Cube().getState():
-        print("IT BROKE")
-        break
-    elif len(solution) > max:
-        max = len(solution)
+# for i in range(100):
+#     cube = getRandomScramble(200)
+#     cube, solution = t.Solve(cube)
+#     if cube.getState()!=Cube().getState():
+#         print("IT BROKE")
+#         break
+#     elif len(solution) > max:
+#         max = len(solution)
 
-print(max)
+# print(max)
+
+cube = getRandomScramble(100)
+
+cube, sol = t.Solve(cube)
+print(sol)
+print(len(sol))
