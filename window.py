@@ -4,12 +4,13 @@ from cube import *
 from time import sleep
 from threading import Thread
 
-ROTATION_SPEED = 400
+DEF_ROTATION_SPEED = 400
 
 app = Ursina(development_mode=True)
 
 class GUICube():
     t = Thistlethwaite()
+    rotationSpeed = DEF_ROTATION_SPEED
 
     def __init__(self) -> None:
         cubepiece = Entity(model='cube', color=color.black)
@@ -255,6 +256,7 @@ class GUICube():
         self.rotating_col = col
     
     def scrambleAndSolve(self):
+        self.rotationSpeed = 1600
         cube = getRandomScramble(100)
         cube, sol = self.t.Solve(cube)
         print(sol)
@@ -262,12 +264,14 @@ class GUICube():
         for move in reversed(sol):
             for i in range(move[2]):
                 self.rotateFace(move[0], -move[1])
-                sleep(.3)
+                sleep(.1)
         sleep(2)
         for move in sol:
             for i in range(move[2]):
                 self.rotateFace(move[0], move[1])
-                sleep(.3)
+                sleep(.1)
+        
+        self.rotationSpeed = DEF_ROTATION_SPEED
 
             
 guiCube = GUICube()
@@ -276,113 +280,113 @@ def update():
     global guiCube
     if guiCube.rotating:
         if guiCube.rotating_col == "w+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateWhite(90-guiCube.rotation_deg)
                 guiCube.reIndexWhite(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateWhite(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateWhite(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "w-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateWhite(guiCube.rotation_deg-90)
                 guiCube.reIndexWhite(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateWhite(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateWhite(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "b+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateBlue(90-guiCube.rotation_deg)
                 guiCube.reIndexBlue(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateBlue(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateBlue(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "b-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateBlue(guiCube.rotation_deg-90)
                 guiCube.reIndexBlue(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateBlue(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateBlue(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "r+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateRed(90-guiCube.rotation_deg)
                 guiCube.reIndexRed(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateRed(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateRed(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "r-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateRed(guiCube.rotation_deg-90)
                 guiCube.reIndexRed(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateRed(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateRed(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "g+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateGreen(90-guiCube.rotation_deg)
                 guiCube.reIndexGreen(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateGreen(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateGreen(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "g-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateGreen(guiCube.rotation_deg-90)
                 guiCube.reIndexGreen(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateGreen(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateGreen(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "y+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateYellow(90-guiCube.rotation_deg)
                 guiCube.reIndexYellow(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateYellow(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateYellow(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "y-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateYellow(guiCube.rotation_deg-90)
                 guiCube.reIndexYellow(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateYellow(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateYellow(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "o+":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateOrange(90-guiCube.rotation_deg)
                 guiCube.reIndexOrange(1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateOrange(ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateOrange(guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
         elif guiCube.rotating_col == "o-":
-            if guiCube.rotation_deg + ROTATION_SPEED * time.dt >= 90:
+            if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
                 guiCube.rotateOrange(guiCube.rotation_deg-90)
                 guiCube.reIndexOrange(-1)
                 guiCube.disableRotation()
                 guiCube.resetRotationDeg()
             else:
-                guiCube.rotateOrange(-ROTATION_SPEED * time.dt)
-                guiCube.editRotationDeg(ROTATION_SPEED * time.dt)
+                guiCube.rotateOrange(-guiCube.rotationSpeed * time.dt)
+                guiCube.editRotationDeg(guiCube.rotationSpeed * time.dt)
 
 def input(key):
     global guiCube
