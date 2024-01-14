@@ -151,21 +151,4 @@ class Thistlethwaite:
         
         return newSolution
 
-max = 0
-t = Thistlethwaite()
-# for i in range(100):
-#     cube = getRandomScramble(200)
-#     cube, solution = t.Solve(cube)
-#     if cube.getState()!=Cube().getState():
-#         print("IT BROKE")
-#         break
-#     elif len(solution) > max:
-#         max = len(solution)
 
-# print(max)
-
-cube = getRandomScramble(100)
-
-cube, sol = t.Solve(cube)
-print(sol)
-print(len(sol))
