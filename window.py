@@ -185,6 +185,47 @@ class GUICube():
         
         #revert
         self.cube = list(list(x) for x in zip(*self.cube)) 
+
+    def rotateFace(self, face: int, dir: int) -> None:
+        if not self.rotating:
+            match face:
+                case 0:
+                    if dir == 1:
+                        self.editRotationCol("w+")
+                    else:
+                        self.editRotationCol("w-")
+                
+                case 1:
+                    if dir == 1:
+                        self.editRotationCol("r+")
+                    else:
+                        self.editRotationCol("r-")
+
+                case 2:
+                    if dir == 1:
+                        self.editRotationCol("b+")
+                    else:
+                        self.editRotationCol("b-")
+
+                case 3:
+                    if dir == 1:
+                        self.editRotationCol("o+")
+                    else:
+                        self.editRotationCol("o-")
+
+                case 4:
+                    if dir == 1:
+                        self.editRotationCol("g+")
+                    else:
+                        self.editRotationCol("g-")
+
+                case 5:
+                    if dir == 1:
+                        self.editRotationCol("y+")
+                    else:
+                        self.editRotationCol("y-")
+            
+            self.enableRotation()
     
     def rotateCubeUp(self) -> None:
         self.cube[1][1][1].rotation_x += 45
@@ -216,78 +257,19 @@ class GUICube():
     def scrambleAndSolve(self):
         cube = getRandomScramble(100)
         cube, sol = self.t.Solve(cube)
-        for move in sol[::-1]:
-            match move[0]:
-                case 0:
-                    if move[1] == -1:
-                        self.rotating_col = "w+"
-                    else:
-                        self.rotating_col = "w-"
-                case 1:
-                    if move[1] == -1:
-                        self.rotating_col = "r+"
-                    else:
-                        self.rotating_col = "r-"
-                case 2:
-                    if move[1] == -1:
-                        self.rotating_col = "b+"
-                    else:
-                        self.rotating_col = "b-"
-                case 3:
-                    if move[1] == -1:
-                        self.rotating_col = "o+"
-                    else:
-                        self.rotating_col = "o-"
-                case 4:
-                    if move[1] == -1:
-                        self.rotating_col = "g+"
-                    else:
-                        self.rotating_col = "g-"
-                case 5:
-                    if move[1] == -1:
-                        self.rotating_col = "y+"
-                    else:
-                        self.rotating_col = "y-"
-            self.rotating = True
-            sleep(.5)
-        sleep(3)
+        print(sol)
+        sleep(.1)
+        for move in reversed(sol):
+            for i in range(move[2]):
+                self.rotateFace(move[0], -move[1])
+                sleep(.3)
+        sleep(2)
         for move in sol:
-            match move[0]:
-                case 0:
-                    if move[1] == 1:
-                        self.rotating_col = "w+"
-                    else:
-                        self.rotating_col = "w-"
-                case 1:
-                    if move[1] == 1:
-                        self.rotating_col = "r+"
-                    else:
-                        self.rotating_col = "r-"
-                case 2:
-                    if move[1] == 1:
-                        self.rotating_col = "b+"
-                    else:
-                        self.rotating_col = "b-"
-                case 3:
-                    if move[1] == 1:
-                        self.rotating_col = "o+"
-                    else:
-                        self.rotating_col = "o-"
-                case 4:
-                    if move[1] == 1:
-                        self.rotating_col = "g+"
-                    else:
-                        self.rotating_col = "g-"
-                case 5:
-                    if move[1] == 1:
-                        self.rotating_col = "y+"
-                    else:
-                        self.rotating_col = "y-"
-            self.rotating = True
-            sleep(.5)
+            for i in range(move[2]):
+                self.rotateFace(move[0], move[1])
+                sleep(.3)
 
             
-
 guiCube = GUICube()
 
 def update():
@@ -413,53 +395,29 @@ def input(key):
     elif key == "right arrow":
         guiCube.rotateCubeRight()
     elif key == "w":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("w+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(0, 1)
     elif key == "s":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("w-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(0, -1)
     elif key == "r":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("r+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(1, 1)
     elif key == "f":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("r-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(1, -1)
     elif key == "t":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("b+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(2, 1)
     elif key == "g":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("b-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(2, -1)
     elif key == "e":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("g+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(3, 1)
     elif key == "d":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("g-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(3, -1)
     elif key == "y":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("y+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(4, 1)
     elif key == "h":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("y-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(4, -1)
     elif key == "u":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("o+")
-            guiCube.enableRotation()
+        guiCube.rotateFace(5, 1)
     elif key == "j":
-        if not guiCube.rotating:
-            guiCube.editRotationCol("o-")
-            guiCube.enableRotation()
+        guiCube.rotateFace(5, -1)
     elif key == "b":
         if not guiCube.rotating:
             t = Thread(target=guiCube.scrambleAndSolve)
