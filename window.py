@@ -8,6 +8,15 @@ DEF_ROTATION_SPEED = 400
 
 app = Ursina(development_mode=True)
 
+colourMappings = {
+    0 : color.white,
+    1 : color.red,
+    2 : color.blue,
+    3 : color.orange,
+    4 : color.green,
+    5 : color.yellow
+}
+
 class GUICube():
     t = Thistlethwaite()
     rotationSpeed = DEF_ROTATION_SPEED
@@ -276,6 +285,53 @@ class GUICube():
             
 guiCube = GUICube()
 
+class InputMenu:
+    bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True)
+    border = Button(model='quad', scale=0.49, scale_z = 0.1, z=0, color=color.black, disabled=True)
+    centreButton = Button(model='quad', scale=.15, z=-4, color=color.white)
+    paletteButton = Button(model='quad', scale_x=.15, scale_y=0.075, x=0.5, z=-1, color=color.white)
+    paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='PALETTE', text_origin=(0,0.44), text_color=color.white)
+    
+    def __init__(self) -> None:
+        # Input Grid
+        self.buttons: list[list[Button]] = []
+        for i in range(3):
+            row: list[Button] = []
+            for j in range(3):
+                if not i == j == 1:
+                    button = duplicate(self.centreButton)
+                    button.set_position(((i-1)*3.2, (j-1)*3.2, -1))
+                    row.append(button)
+                else:
+                    row.append(self.centreButton)
+            self.buttons.append(row)
+        
+        self.centreButton.color = color.white
+        self.centreButton.highlight_color = color.white
+        self.centreButton.pressed_color = color.white
+
+        # Colour Palette
+        self.paletteButtons = []
+        for i in range(6):
+            button = duplicate(self.paletteButton)
+            button.y = 0.215-(0.0375)*(i+1) - (0.05) * i
+            button.color = colourMappings[i]
+            button.highlight_color = button.color.tint(.2)
+            button.pressed_color = button.color.tint(-.2)
+            self.paletteButtons.append(button)
+        destroy(self.paletteButton)
+
+    def destroySelf(self):
+        for row in self.buttons:
+            for button in row:
+                destroy(button)
+        for button in self.paletteButtons:
+            destroy(button)
+        destroy(self.bg)
+        destroy(self.border)
+        destroy(self.paletteBorder)
+
+
 def update():
     global guiCube
     if guiCube.rotating:
@@ -430,7 +486,10 @@ def input(key):
 
 camera.x = 20
 camera.y = 20
-camera.fov = 30
+camera.fov = 20
 camera.look_at((0, 0, 0))
+
+i = InputMenu()
+#i.destroySelf()
 
 app.run()
