@@ -425,6 +425,7 @@ def input(key):
     elif key == "b":
         if not guiCube.rotating:
             t = Thread(target=guiCube.scrambleAndSolve)
+            t.setDaemon(True)
             t.start()
 
 camera.x = 20
