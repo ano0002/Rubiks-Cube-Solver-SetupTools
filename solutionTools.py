@@ -37,19 +37,19 @@ class ICubeGen:
             self.cornerCoordsDict = json.load(f)
     
     def constructICube(self) -> Cube:
-        ifcubearray = Cube().getState()
+        icubearray = Cube().getState()
         for i in range(6):
             for j in range(3):
                 for k in range(3):
                     if abs(j-k) == 1:
-                        ifcubearray[i][j][k] = self.getIEdge((i,j,k))
+                        icubearray[i][j][k] = self.getIEdge((i,j,k))
                     elif j == k == 1:
-                        ifcubearray[i][1][1] = self.mappings[i] + "4"
+                        icubearray[i][1][1] = self.mappings[i] + "4"
                     else:
-                        ifcubearray[i][j][k] = self.getICorner((i,j,k))
-        ifCube = Cube(state=ifcubearray)
+                        icubearray[i][j][k] = self.getICorner((i,j,k))
+        iCube = Cube(state=icubearray)
 
-        return ifCube
+        return iCube
 
 
     def getIEdge(self, coords: tuple) -> str:
@@ -182,7 +182,29 @@ class SolverTools:
         
     def isSolved(self, cube: Cube) -> bool:
         return self.solvedCube.getState() == cube.getState()
-  
+
+    def isCubeValid(self, cube: Cube) -> bool:
+        iCG = ICubeGen(cube)
+
+        try:
+            iCube = iCG.constructICube()
+        except KeyError:
+            return False
+        except Exception as e:
+            raise e
+        
+        key = iCube.generateKey()
+        flattened = [key[i:i+2] for i in range(0, len(key), 2)]
+        print(key)
+        for i in range(6):
+            for j in range(9):
+                if j != 4:
+                    string = iCG.mappings[i] + str(j)
+                    if flattened.count(string) != 1:
+                        return False
+               
+        return True
+
 class Masks:
     def __init__(self):
         pass

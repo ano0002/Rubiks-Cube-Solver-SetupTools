@@ -3,6 +3,7 @@ from thistlethwaite import *
 from cube import *
 from time import sleep
 from threading import Thread
+from solutionTools import SolverTools
 
 DEF_ROTATION_SPEED = 400
 
@@ -297,6 +298,7 @@ class InputMenu:
     downReference = Button(model='arrow', rotation_z=90, scale=0.2, scale_x=0.15, y=-0.2, z=0, disabled=True, color=color.red, collider=None)
     rightReference = Button(model='arrow', rotation_z=0, scale=0.2, scale_x=0.15, x=0.2, z=0, disabled=True, color=color.blue, collider=None)
     leftReference = Button(model='arrow', rotation_z=180, scale=0.2, scale_x=0.15, x=-0.2, z=0, disabled=True, color=color.green, collider=None)
+    solveButton = Button(model='quad', text='Solve!', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90, disabled=True, visible=False)
     currentFace = 0
     selectedColor = color.white
     faceData = []
@@ -336,6 +338,7 @@ class InputMenu:
         self.paletteBorder.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
         self.nextButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
         self.backButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.solveButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
@@ -379,6 +382,10 @@ class InputMenu:
             self.nextButton.disabled = True
             self.nextButton.on_click = None
             self.nextButton.visible = False
+            self.solveButton.disabled = False
+            self.solveButton.on_click = self.trySolve
+            self.solveButton.z = -1
+            self.solveButton.visible = True
         else:
             self.backButton.disabled = False
             self.backButton.on_click = Func(self.cycleFace, -1)
@@ -386,6 +393,10 @@ class InputMenu:
             self.nextButton.disabled = False
             self.nextButton.on_click = Func(self.cycleFace, 1)
             self.nextButton.visible = True
+            self.solveButton.disabled = True
+            self.solveButton.on_click = None
+            self.solveButton.visible = False
+            self.solveButton.z = 1
 
         # Load faces from stored faces
         for i in range(3):
@@ -428,6 +439,21 @@ class InputMenu:
                 self.downReference.color = color.orange
                 self.leftReference.color = color.green
 
+    def trySolve(self):
+        # Save edits of yellow face into stored faces
+        for i in range(3):
+            for j in range(3):
+                if not i == j == 1:
+                    self.faceData[self.currentFace][i][j] = self.buttons[i][j].color
+                
+        invertedMappings = {val:key for key, val in colourMappings.items()}
+        regularCube = Cube().getState()
+        for i in range(6):
+            for j in range(3):
+                for k in range(3):
+                    regularCube[i][j][k] = invertedMappings[self.faceData[i][j][k]]
+
+        print(SolverTools().isCubeValid(Cube(state=regularCube)))        
 
     def destroySelf(self):
         for row in self.buttons:
