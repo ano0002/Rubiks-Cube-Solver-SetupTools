@@ -7,7 +7,7 @@ from solutionTools import SolverTools
 
 DEF_ROTATION_SPEED = 400
 
-app = Ursina(development_mode=True)
+app = Ursina(development_mode=True, show_ursina_splash=False)
 
 colourMappings = {
     0 : color.white,
@@ -290,7 +290,6 @@ class InputMenu:
     bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True)
     border = Button(model='quad', scale=0.49, z=0, color=color.black, disabled=True)
     centreButton = Button(model='quad', scale=.15, z=-1, color=color.white)
-    paletteButton = Button(model='quad', scale_x=.15, scale_y=0.075, x=0.5, z=-1, color=color.white)
     paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='Palette', text_origin=(0,0.44), text_color=color.white)
     nextButton = Button(model='quad', text=' Next →', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
     backButton = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
@@ -328,14 +327,13 @@ class InputMenu:
         # Colour Palette
         self.paletteButtons = []
         for i in range(6):
-            button = duplicate(self.paletteButton)
+            button = Button(model='quad', scale_x=.15, scale_y=0.075, x=0.5, z=-1, color=color.white)
             button.y = 0.215-(0.0375)*(i+1) - (0.05) * i
             button.color = colourMappings[i]
             button.highlight_color = button.color.tint(.2)
             button.pressed_color = button.color.tint(-.2)
             button.on_click = Func(self.setColor, button)
             self.paletteButtons.append(button)
-        destroy(self.paletteButton)
 
         # Fonts
         self.paletteBorder.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
@@ -510,6 +508,9 @@ class InputMenu:
         destroy(self.downReference)
         destroy(self.rightReference)
         destroy(self.leftReference)
+        destroy(self.solveButton)
+        destroy(self.errorBg)
+        destroy(self.errorOk)
 
 
 def update():
