@@ -303,6 +303,9 @@ class InputMenu:
     selectedColor = color.white
     faceData = []
 
+    errorBg = Button(model='quad', scale=0.4, scale_x=.7, z=2, disabled=True, visible=False, color=color.color(0.7, 0.7, 0.7, 1), text_origin=(0,0.2), text='ERROR\n\nInvalid cube configuration entered.\nGo back and check all faces are correct!\nUse the coloured arrows to ensure\nthe faces are correctly oriented.')
+    errorOk = Button(model='quad', scale_x=.12, z=2, scale_y=0.05, y=-0.1, disabled=True, visible=False, color=color.black66, text='OK', on_click=None)
+
     def __init__(self) -> None:
         # Input Grid
         self.buttons: list[list[Button]] = []
@@ -310,7 +313,7 @@ class InputMenu:
             row: list[Button] = []
             for j in range(3):
                 if not i == j == 1:
-                    button = duplicate(self.centreButton)
+                    button = Button(model='quad', scale=.15, color=color.white)
                     button.set_position(((i-1)*3.2, (j-1)*3.2, -1))
                     button.on_click = Func(self.paintColor, button)
                     row.append(button)
@@ -339,6 +342,8 @@ class InputMenu:
         self.nextButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
         self.backButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
         self.solveButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.errorBg.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.errorOk.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
@@ -453,7 +458,42 @@ class InputMenu:
                 for k in range(3):
                     regularCube[i][j][k] = invertedMappings[self.faceData[i][j][k]]
 
-        print(SolverTools().isCubeValid(Cube(state=regularCube)))        
+        if SolverTools().isCubeValid(Cube(state=regularCube)):
+            pass
+        else:
+            self.showError()
+    
+    def showError(self):
+        self.solveButton.disabled = True
+        self.solveButton.on_click = None
+        self.backButton.disabled = True
+        self.backButton.on_click = None
+        for row in self.buttons:
+            for button in row:
+                button.disabled = True
+                button.on_click = None
+        self.errorBg.visible = True
+        self.errorOk.visible = True
+        self.errorOk.disabled = False
+        self.errorBg.z = -4
+        self.errorOk.z = -5
+        self.errorOk.on_click = self.hideError
+    
+    def hideError(self):
+        self.solveButton.disabled = False
+        self.solveButton.on_click = self.trySolve
+        self.backButton.disabled = False
+        self.backButton.on_click = Func(self.cycleFace, -1)
+        for row in self.buttons:
+            for button in row:
+                button.disabled = False
+                button.on_click = Func(self.paintColor, button)
+        self.errorBg.visible = False
+        self.errorOk.visible = False
+        self.errorOk.disabled = True
+        self.errorBg.z = 4
+        self.errorOk.z = 4
+        self.errorOk.on_click = None
 
     def destroySelf(self):
         for row in self.buttons:

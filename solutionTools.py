@@ -195,7 +195,6 @@ class SolverTools:
         
         key = iCube.generateKey()
         flattened = [key[i:i+2] for i in range(0, len(key), 2)]
-        print(key)
         for i in range(6):
             for j in range(9):
                 if j != 4:
