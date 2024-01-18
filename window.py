@@ -291,14 +291,14 @@ class InputMenu:
     centreButton = Button(model='quad', scale=.15, z=-1, color=color.white)
     paletteButton = Button(model='quad', scale_x=.15, scale_y=0.075, x=0.5, z=-1, color=color.white)
     paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='Palette', text_origin=(0,0.44), text_color=color.white)
-    selectedColor = color.white
-    nextButton = Button(model='quad', text='Next →', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
-    backButton = Button(model='quad', text='← Back', scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
+    nextButton = Button(model='quad', text=' Next →', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
+    backButton = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
     upReference = Button(model='arrow', rotation_z=-90, scale=0.2, scale_x=0.15, y=0.2, z=0, disabled=True, color=color.orange, collider=None)
     downReference = Button(model='arrow', rotation_z=90, scale=0.2, scale_x=0.15, y=-0.2, z=0, disabled=True, color=color.red, collider=None)
     rightReference = Button(model='arrow', rotation_z=0, scale=0.2, scale_x=0.15, x=0.2, z=0, disabled=True, color=color.blue, collider=None)
     leftReference = Button(model='arrow', rotation_z=180, scale=0.2, scale_x=0.15, x=-0.2, z=0, disabled=True, color=color.green, collider=None)
     currentFace = 0
+    selectedColor = color.white
     faceData = []
 
     def __init__(self) -> None:
@@ -339,7 +339,7 @@ class InputMenu:
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
-        self.backButton.on_click = Func(self.cycleFace, -1)
+        self.backButton.on_click = None
 
         # Stored faces
         self.faceData = Cube().getState()
@@ -367,10 +367,25 @@ class InputMenu:
                     self.faceData[self.currentFace][i][j] = self.buttons[i][j].color
 
         self.currentFace += dir
-        self.currentFace %= 6
         self.centreButton.color = colourMappings[self.currentFace]
         self.centreButton.highlight_color = self.centreButton.color
         self.centreButton.pressed_color = self.centreButton.color
+
+        if self.currentFace == 0:
+            self.backButton.disabled = True
+            self.backButton.on_click = None
+            self.backButton.visible = False
+        elif self.currentFace == 5:
+            self.nextButton.disabled = True
+            self.nextButton.on_click = None
+            self.nextButton.visible = False
+        else:
+            self.backButton.disabled = False
+            self.backButton.on_click = Func(self.cycleFace, -1)
+            self.backButton.visible = True
+            self.nextButton.disabled = False
+            self.nextButton.on_click = Func(self.cycleFace, 1)
+            self.nextButton.visible = True
 
         # Load faces from stored faces
         for i in range(3):
