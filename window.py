@@ -377,6 +377,8 @@ class InputMenu:
             for j in range(3):
                 if not i == j == 1:
                     self.buttons[i][j].color = self.faceData[self.currentFace][i][j]
+                    self.buttons[i][j].highlight_color = self.buttons[i][j].color.tint(.2)
+                    self.buttons[i][j].pressed_color = self.buttons[i][j].color.tint(-.2)
     
         # Edit reference arrows
         match self.currentFace:
