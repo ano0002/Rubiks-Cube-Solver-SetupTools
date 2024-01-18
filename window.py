@@ -287,11 +287,20 @@ guiCube = GUICube()
 
 class InputMenu:
     bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True)
-    border = Button(model='quad', scale=0.49, scale_z = 0.1, z=0, color=color.black, disabled=True)
-    centreButton = Button(model='quad', scale=.15, z=-4, color=color.white)
+    border = Button(model='quad', scale=0.49, z=0, color=color.black, disabled=True)
+    centreButton = Button(model='quad', scale=.15, z=-1, color=color.white)
     paletteButton = Button(model='quad', scale_x=.15, scale_y=0.075, x=0.5, z=-1, color=color.white)
-    paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='PALETTE', text_origin=(0,0.44), text_color=color.white)
-    
+    paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='Palette', text_origin=(0,0.44), text_color=color.white)
+    selectedColor = color.white
+    nextButton = Button(model='quad', text='Next →', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
+    backButton = Button(model='quad', text='← Back', scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
+    upReference = Button(model='arrow', rotation_z=-90, scale=0.2, scale_x=0.15, y=0.2, z=0, disabled=True, color=color.orange, collider=None)
+    downReference = Button(model='arrow', rotation_z=90, scale=0.2, scale_x=0.15, y=-0.2, z=0, disabled=True, color=color.red, collider=None)
+    rightReference = Button(model='arrow', rotation_z=0, scale=0.2, scale_x=0.15, x=0.2, z=0, disabled=True, color=color.blue, collider=None)
+    leftReference = Button(model='arrow', rotation_z=180, scale=0.2, scale_x=0.15, x=-0.2, z=0, disabled=True, color=color.green, collider=None)
+    currentFace = 0
+    faceData = []
+
     def __init__(self) -> None:
         # Input Grid
         self.buttons: list[list[Button]] = []
@@ -301,6 +310,7 @@ class InputMenu:
                 if not i == j == 1:
                     button = duplicate(self.centreButton)
                     button.set_position(((i-1)*3.2, (j-1)*3.2, -1))
+                    button.on_click = Func(self.paintColor, button)
                     row.append(button)
                 else:
                     row.append(self.centreButton)
@@ -318,8 +328,89 @@ class InputMenu:
             button.color = colourMappings[i]
             button.highlight_color = button.color.tint(.2)
             button.pressed_color = button.color.tint(-.2)
+            button.on_click = Func(self.setColor, button)
             self.paletteButtons.append(button)
         destroy(self.paletteButton)
+
+        # Fonts
+        self.paletteBorder.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.nextButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.backButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+
+        # Onclick for next and back
+        self.nextButton.on_click = Func(self.cycleFace, 1)
+        self.backButton.on_click = Func(self.cycleFace, -1)
+
+        # Stored faces
+        self.faceData = Cube().getState()
+        for i in range(6):
+            for j in range(3):
+                for k in range(3):
+                    if j == k == 1:
+                        self.faceData[i][j][k] = colourMappings[self.faceData[i][j][k]]
+                    else:
+                        self.faceData[i][j][k] = color.white
+    
+    def setColor(self, button: Button):
+        self.selectedColor = button.color
+    
+    def paintColor(self, button: Button):
+        button.color = self.selectedColor
+        button.highlight_color = button.color.tint(.2)
+        button.pressed_color = button.color.tint(-.2)
+    
+    def cycleFace(self, dir: int):
+        # Save edits into stored faces
+        for i in range(3):
+            for j in range(3):
+                if not i == j == 1:
+                    self.faceData[self.currentFace][i][j] = self.buttons[i][j].color
+
+        self.currentFace += dir
+        self.currentFace %= 6
+        self.centreButton.color = colourMappings[self.currentFace]
+        self.centreButton.highlight_color = self.centreButton.color
+        self.centreButton.pressed_color = self.centreButton.color
+
+        # Load faces from stored faces
+        for i in range(3):
+            for j in range(3):
+                if not i == j == 1:
+                    self.buttons[i][j].color = self.faceData[self.currentFace][i][j]
+    
+        # Edit reference arrows
+        match self.currentFace:
+            case 0:
+                self.upReference.color = color.orange
+                self.rightReference.color = color.blue
+                self.downReference.color = color.red
+                self.leftReference.color = color.green
+            case 1:
+                self.upReference.color = color.white
+                self.rightReference.color = color.blue
+                self.downReference.color = color.yellow
+                self.leftReference.color = color.green
+            case 2:
+                self.upReference.color = color.white
+                self.rightReference.color = color.orange
+                self.downReference.color = color.yellow
+                self.leftReference.color = color.red
+            case 3:
+                self.upReference.color = color.white
+                self.rightReference.color = color.green
+                self.downReference.color = color.yellow
+                self.leftReference.color = color.blue
+            case 4:
+                self.upReference.color = color.white
+                self.rightReference.color = color.red
+                self.downReference.color = color.yellow
+                self.leftReference.color = color.orange
+            case 5:
+                self.upReference.color = color.red
+                self.rightReference.color = color.blue
+                self.downReference.color = color.orange
+                self.leftReference.color = color.green
+
 
     def destroySelf(self):
         for row in self.buttons:
@@ -330,6 +421,12 @@ class InputMenu:
         destroy(self.bg)
         destroy(self.border)
         destroy(self.paletteBorder)
+        destroy(self.nextButton)
+        destroy(self.backButton)
+        destroy(self.upReference)
+        destroy(self.downReference)
+        destroy(self.rightReference)
+        destroy(self.leftReference)
 
 
 def update():
@@ -446,6 +543,7 @@ def update():
 
 def input(key):
     global guiCube
+    global i
     if key == "up arrow":
         guiCube.rotateCubeUp()
     elif key == "down arrow":
@@ -481,12 +579,15 @@ def input(key):
     elif key == "b":
         if not guiCube.rotating:
             t = Thread(target=guiCube.scrambleAndSolve)
-            t.setDaemon(True)
+            t.daemon = True
             t.start()
+    elif key == "l":
+        i.destroySelf()
+
 
 camera.x = 20
 camera.y = 20
-camera.fov = 20
+camera.fov = 25
 camera.look_at((0, 0, 0))
 
 i = InputMenu()
