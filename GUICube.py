@@ -187,13 +187,13 @@ class GUICube():
         if not self.rotating:
             match face:
                 case 0:
-                    if dir == 1:
+                    if dir == -1:
                         self.editRotationCol("w+")
                     else:
                         self.editRotationCol("w-")
                 
                 case 1:
-                    if dir == 1:
+                    if dir == -1:
                         self.editRotationCol("r+")
                     else:
                         self.editRotationCol("r-")
@@ -211,7 +211,7 @@ class GUICube():
                         self.editRotationCol("o-")
 
                 case 4:
-                    if dir == 1:
+                    if dir == -1:
                         self.editRotationCol("g+")
                     else:
                         self.editRotationCol("g-")
@@ -250,6 +250,18 @@ class GUICube():
     
     def editRotationCol(self, col:str) -> None:
         self.rotating_col = col
+
+    def scrambleToSolution(self, solution: list):
+        self.rotationSpeed = 1600
+        sleep(1)
+        print(solution)
+        for move in reversed(solution):
+            if move != 'END':
+                for _ in range(move[2]):
+                    self.rotateFace(move[0], -move[1])
+                    sleep(.1)
+
+        self.rotationSpeed = DEF_ROTATION_SPEED
     
     def scrambleAndSolve(self):
         self.rotationSpeed = 1600
@@ -258,7 +270,7 @@ class GUICube():
         print(sol)
         sleep(.1)
         for move in reversed(sol):
-            for i in range(move[2]):
+            for _ in range(move[2]):
                 self.rotateFace(move[0], -move[1])
                 sleep(.1)
         sleep(2)

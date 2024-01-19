@@ -20,9 +20,20 @@ colourMappings = {
 }
             
 guiCube = GUICube()
+solution = []
 
 def update():
     global guiCube
+    global solution
+    try:
+        if solution[-1] == 'END':
+            print("SOLUTION RECEIVED")
+            t = Thread(target=guiCube.scrambleToSolution, args=[copy(solution)])
+            t.daemon = True
+            t.start()
+            solution = []
+    except:
+        pass
     if guiCube.rotating:
         if guiCube.rotating_col == "w+":
             if guiCube.rotation_deg + guiCube.rotationSpeed * time.dt >= 90:
@@ -182,7 +193,6 @@ camera.y = 20
 camera.fov = 25
 camera.look_at((0, 0, 0))
 
-i = InputMenu()
-#i.destroySelf()
+i = InputMenu(solution)
 
 app.run()
