@@ -1,6 +1,8 @@
 from ursina import *
 from solutionTools import SolverTools
-from cube import *
+from cube import Cube
+from thistlethwaite import *
+from threading import Thread
 
 colourMappings = {
     0 : color.white,
@@ -180,12 +182,33 @@ class InputMenu:
         for i in range(6):
             for j in range(3):
                 for k in range(3):
+                    #regularCube[i][k][j] = invertedMappings[self.faceData[i][j][k]]
                     regularCube[i][j][k] = invertedMappings[self.faceData[i][j][k]]
 
+        #regularCube = [list(x)[::-1] for x in regularCube]
+        print(regularCube)
+
         if SolverTools().isCubeValid(Cube(state=regularCube)):
-            pass
+            moves = []
+            t = Thread(target=self.Solve, args=(Cube(state=regularCube), moves))
+            t.daemon = True
+            t.start()
+            t.join(timeout=5)
+            if len(moves) == 0 and Cube().getState() != regularCube:
+                self.showError()
         else:
             self.showError()
+    
+    def Solve(self, cube: Cube, moves: list):
+        t = Thistlethwaite()
+        try:
+            _, result = t.Solve(cube)
+        except:
+            return None
+        for move in result:
+            moves.append(move)
+        return None
+
     
     def showError(self):
         self.solveButton.disabled = True
