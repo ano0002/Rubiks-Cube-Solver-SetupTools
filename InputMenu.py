@@ -14,7 +14,7 @@ colourMappings = {
 }
 
 class InputMenu:
-    def __init__(self) -> None:
+    def __init__(self, solution: list) -> None:
         # Buttons and stuff
         self.bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True)
         self.border = Button(model='quad', scale=0.49, z=0, color=color.black, disabled=True)
@@ -30,6 +30,9 @@ class InputMenu:
         self.currentFace = 0
         self.selectedColor = color.white
         self.faceData = []
+
+        # For output
+        self.solution = solution
 
         self.errorBg = Button(model='quad', scale=0.4, scale_x=.7, z=2, disabled=True, visible=False, color=color.color(0.7, 0.7, 0.7, 1), text_origin=(0,0.2), text='ERROR\n\nInvalid cube configuration entered.\nGo back and check all faces are correct!\nUse the coloured arrows to ensure\nthe faces are correctly oriented.')
         self.errorOk = Button(model='quad', scale_x=.12, z=2, scale_y=0.05, y=-0.1, disabled=True, visible=False, color=color.black66, text='OK', on_click=None)
@@ -182,10 +185,9 @@ class InputMenu:
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    #regularCube[i][k][j] = invertedMappings[self.faceData[i][j][k]]
-                    regularCube[i][j][k] = invertedMappings[self.faceData[i][j][k]]
+                    regularCube[i][k][j] = invertedMappings[self.faceData[i][j][k]]
 
-        #regularCube = [list(x)[::-1] for x in regularCube]
+        regularCube = [list(x)[::-1] for x in regularCube]
 
         if SolverTools().isCubeValid(Cube(state=regularCube)):
             moves = []
@@ -195,6 +197,11 @@ class InputMenu:
             t.join()
             if len(moves) == 0 and Cube().getState() != regularCube:
                 self.showError()
+            else:
+                for move in moves:
+                    self.solution.append(move)
+                self.solution.append('END') # END flag
+                self.destroySelf()
         else:
             self.showError()
     

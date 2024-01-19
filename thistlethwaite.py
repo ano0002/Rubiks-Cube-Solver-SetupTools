@@ -1,7 +1,7 @@
 from cube import *
 import json
 from solutionTools import *
-from time import time
+from time import time as tm
 
 class Thistlethwaite:
     # All moves
@@ -89,7 +89,7 @@ class Thistlethwaite:
             return solution
         
         if terminate_after is not None:
-            if time() - ts > terminate_after:
+            if tm() - ts > terminate_after:
                 raise TimeoutError
         
         try:
@@ -123,7 +123,7 @@ class Thistlethwaite:
             return None
         
     def Solve(self, cube: Cube, terminate_after=None) -> (Cube, list):
-        ts = time()
+        ts = tm()
         solution = []
         cube, temp = self.G0(cube, ts, terminate_after)
         solution += temp
