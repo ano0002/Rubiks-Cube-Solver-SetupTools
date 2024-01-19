@@ -1,6 +1,7 @@
 from cube import *
 import json
 from solutionTools import *
+from time import time
 
 class Thistlethwaite:
     # All moves
@@ -40,52 +41,56 @@ class Thistlethwaite:
         # U2, D2, F2, B2, R2, L2
         self.validMoves = [(0,1,2), (1,1,2), (2,1,2), (3,1,2), (4,1,2), (5,1,2)]
 
-    def G0(self, cube: Cube) -> (Cube, list):
+    def G0(self, cube: Cube, ts, terminate_after) -> (Cube, list):
         self.setMovesG0()
         with open(r"Data\G0.json", "r") as f:
             g0Table = json.load(f)
         maskedCube = self.G0Mask(cube)
-        solution = self.IDDFS(maskedCube, g0Table, 7, 10)
+        solution = self.IDDFS(maskedCube, g0Table, 7, ts, terminate_after, 10)
         for move in solution:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
         return cube, solution
     
-    def G1(self, cube: Cube) -> (Cube, list):
+    def G1(self, cube: Cube, ts, terminate_after) -> (Cube, list):
         self.setMovesG1()
         with open(r"Data\G1.json", "r") as f:
             g1Table = json.load(f)
         maskedCube = self.G1Mask(cube)
-        solution = self.IDDFS(maskedCube, g1Table, 7, 10)
+        solution = self.IDDFS(maskedCube, g1Table, 7, ts, terminate_after, 10)
         for move in solution:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
         return cube, solution
 
-    def G2(self, cube: Cube) -> (Cube, list):
+    def G2(self, cube: Cube, ts, terminate_after) -> (Cube, list):
         self.setMovesG2()
         with open(r"Data\G2.json", "r") as f:
             g2Table = json.load(f)
         maskedCube = self.G2Mask(cube)
-        solution = self.IDDFS(maskedCube, g2Table, 6, 100)
+        solution = self.IDDFS(maskedCube, g2Table, 6, ts, terminate_after, 100)
         for move in solution:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
         return cube, solution
     
-    def G3(self, cube: Cube) -> (Cube, list):
+    def G3(self, cube: Cube, ts, terminate_after) -> (Cube, list):
         self.setMovesG3()
         with open(r"Data\G3.json", "r") as f:
             g3Table = json.load(f)
-        solution = self.IDDFS(cube, g3Table, 10, 100)
+        solution = self.IDDFS(cube, g3Table, 10, ts, terminate_after, 100)
         for move in solution:
             for i in range(move[2]):
                 cube.rotateFace(move[0], move[1])
         return cube, solution
 
-    def DFS(self, cube: Cube, solution: list, depthRemaining: int, table: dict, tableMaxDepth: int) -> str:
+    def DFS(self, cube: Cube, solution: list, depthRemaining: int, table: dict, tableMaxDepth: int, ts, terminate_after) -> str:
         if self.solver.isSolved(cube):
             return solution
+        
+        if terminate_after is not None:
+            if time() - ts > terminate_after:
+                raise TimeoutError
         
         try:
             lowerbound = table[cube.generateKey()]
@@ -102,30 +107,31 @@ class Thistlethwaite:
                 cube.rotateFace(move[0], move[1])
             extSolution = solution.copy()
             extSolution.append(move)
-            result = self.DFS(cube, extSolution, depthRemaining-1, table, tableMaxDepth)
+            result = self.DFS(cube, extSolution, depthRemaining-1, table, tableMaxDepth, ts, terminate_after)
             for i in range(move[2]):
                 cube.rotateFace(move[0], -move[1])
             if result is not None:
                 return result
         return None
     
-    def IDDFS(self, cube: Cube, table: dict, tableMaxDepth:int, max_depth: int=10) -> str:
+    def IDDFS(self, cube: Cube, table: dict, tableMaxDepth:int, ts, terminate_after, max_depth: int=10) -> str:
         for depth in range(max_depth):
-            solution = self.DFS(cube, [], depth + 1, table, tableMaxDepth)
+            solution = self.DFS(cube, [], depth + 1, table, tableMaxDepth, ts, terminate_after)
             if solution is not None:
                 return solution
         else:
             return None
         
-    def Solve(self, cube: Cube) -> (Cube, list):
+    def Solve(self, cube: Cube, terminate_after=None) -> (Cube, list):
+        ts = time()
         solution = []
-        cube, temp = self.G0(cube)
+        cube, temp = self.G0(cube, ts, terminate_after)
         solution += temp
-        cube, temp = self.G1(cube)
+        cube, temp = self.G1(cube, ts, terminate_after)
         solution += temp
-        cube, temp = self.G2(cube)
+        cube, temp = self.G2(cube, ts, terminate_after)
         solution += temp
-        cube, temp = self.G3(cube)
+        cube, temp = self.G3(cube, ts, terminate_after)
         solution += temp
         return cube, self.compressSolution(solution)
     

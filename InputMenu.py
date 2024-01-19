@@ -186,14 +186,13 @@ class InputMenu:
                     regularCube[i][j][k] = invertedMappings[self.faceData[i][j][k]]
 
         #regularCube = [list(x)[::-1] for x in regularCube]
-        print(regularCube)
 
         if SolverTools().isCubeValid(Cube(state=regularCube)):
             moves = []
             t = Thread(target=self.Solve, args=(Cube(state=regularCube), moves))
             t.daemon = True
             t.start()
-            t.join(timeout=5)
+            t.join()
             if len(moves) == 0 and Cube().getState() != regularCube:
                 self.showError()
         else:
@@ -202,8 +201,8 @@ class InputMenu:
     def Solve(self, cube: Cube, moves: list):
         t = Thistlethwaite()
         try:
-            _, result = t.Solve(cube)
-        except:
+            _, result = t.Solve(cube, terminate_after=5)
+        except TimeoutError:
             return None
         for move in result:
             moves.append(move)
