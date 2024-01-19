@@ -209,11 +209,14 @@ class InputMenu:
         t = Thistlethwaite()
         try:
             _, result = t.Solve(cube, terminate_after=5)
+            for move in result:
+                moves.append(move)
+            return None
         except TimeoutError:
             return None
-        for move in result:
-            moves.append(move)
-        return None
+        except Exception as e:
+            print(e)
+            return None
 
     
     def showError(self):
