@@ -2,13 +2,10 @@ from ursina import *
 from thistlethwaite import *
 from time import sleep
 
-DEF_ROTATION_SPEED = 400
-
 class GUICube():
     t = Thistlethwaite()
-    rotationSpeed = DEF_ROTATION_SPEED
 
-    def __init__(self) -> None:
+    def __init__(self, defaultRotationSpeed: int=400) -> None:
         cubepiece = Entity(model='cube', color=color.black)
         blueplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=-0.5, color=color.blue, parent=cubepiece)
         yellowplate = Entity(model="cube", scale_x=0.1, scale_y=0.9, scale_z=0.9, x=-0.5, color=color.yellow, parent=cubepiece)
@@ -16,6 +13,9 @@ class GUICube():
         whiteplate = Entity(model="cube", scale_x=0.1, scale_y=0.9, scale_z=0.9, x=0.5, color=color.white, parent=cubepiece)
         orangeplate = Entity(model="cube", scale_x=0.9, scale_y=0.1, scale_z=0.9, y=-0.5, color=color.orange, parent=cubepiece)
         greenplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=0.5, color=color.green, parent=cubepiece)
+
+        self.rotationSpeed = defaultRotationSpeed
+        self.defaultRotationSpeed = defaultRotationSpeed
 
         self.cube = []
         for i in range(3):
@@ -261,22 +261,115 @@ class GUICube():
                     self.rotateFace(move[0], -move[1])
                     sleep(.1)
 
-        self.rotationSpeed = DEF_ROTATION_SPEED
+        self.rotationSpeed = self.defaultRotationSpeed
     
-    def scrambleAndSolve(self):
-        self.rotationSpeed = 1600
-        cube = getRandomScramble(100)
-        cube, sol = self.t.Solve(cube)
-        print(sol)
-        sleep(.1)
-        for move in reversed(sol):
-            for _ in range(move[2]):
-                self.rotateFace(move[0], -move[1])
-                sleep(.1)
-        sleep(2)
-        for move in sol:
-            for i in range(move[2]):
-                self.rotateFace(move[0], move[1])
-                sleep(.1)
-        
-        self.rotationSpeed = DEF_ROTATION_SPEED
+    def Update(self):
+        if self.rotating:
+            if self.rotating_col == "w+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateWhite(90-self.rotation_deg)
+                    self.reIndexWhite(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateWhite(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "w-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateWhite(self.rotation_deg-90)
+                    self.reIndexWhite(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateWhite(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "b+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateBlue(90-self.rotation_deg)
+                    self.reIndexBlue(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateBlue(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "b-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateBlue(self.rotation_deg-90)
+                    self.reIndexBlue(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateBlue(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "r+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateRed(90-self.rotation_deg)
+                    self.reIndexRed(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateRed(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "r-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateRed(self.rotation_deg-90)
+                    self.reIndexRed(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateRed(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "g+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateGreen(90-self.rotation_deg)
+                    self.reIndexGreen(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateGreen(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "g-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateGreen(self.rotation_deg-90)
+                    self.reIndexGreen(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateGreen(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "y+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateYellow(90-self.rotation_deg)
+                    self.reIndexYellow(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateYellow(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "y-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateYellow(self.rotation_deg-90)
+                    self.reIndexYellow(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateYellow(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "o+":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateOrange(90-self.rotation_deg)
+                    self.reIndexOrange(1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateOrange(self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)
+            elif self.rotating_col == "o-":
+                if self.rotation_deg + self.rotationSpeed * time.dt >= 90:
+                    self.rotateOrange(self.rotation_deg-90)
+                    self.reIndexOrange(-1)
+                    self.disableRotation()
+                    self.resetRotationDeg()
+                else:
+                    self.rotateOrange(-self.rotationSpeed * time.dt)
+                    self.editRotationDeg(self.rotationSpeed * time.dt)

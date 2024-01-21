@@ -16,10 +16,10 @@ colourMappings = {
 class InputMenu:
     def __init__(self, solution: list) -> None:
         # Buttons and stuff
-        self.bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True)
-        self.border = Button(model='quad', scale=0.49, z=0, color=color.black, disabled=True)
+        self.bg = Button(model='quad', scale_x = 2, scale_y = 2.5, scale_z = 0.1, z=1, color=color.dark_gray, disabled=True, collider=None)
+        self.border = Button(model='quad', scale=0.49, z=0, color=color.black, disabled=True, collider=None)
         self.centreButton = Button(model='quad', scale=.15, z=-1, color=color.white)
-        self.paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='Palette', text_origin=(0,0.44), text_color=color.white)
+        self.paletteBorder = Button(model='quad', scale_x=.17, scale_y=0.62, x=0.5, y=0, z=0, color=color.black, disabled=True, text='Palette', text_origin=(0,0.44), text_color=color.white, collider=None)
         self.nextButton = Button(model='quad', text=' Next →', scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
         self.backButton = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
         self.upReference = Button(model='arrow', rotation_z=-90, scale=0.2, scale_x=0.15, y=0.2, z=0, disabled=True, color=color.orange, collider=None)
