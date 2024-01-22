@@ -4,7 +4,6 @@ from cube import *
 from GUICube import *
 from InputMenu import *
 from threading import Thread
-from solutionTools import SolverTools
 
 app = Ursina(development_mode=True, show_ursina_splash=False)
 
