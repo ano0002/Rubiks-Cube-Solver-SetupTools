@@ -1,6 +1,7 @@
 from ursina import *
 from thistlethwaite import *
 from time import sleep
+from threading import Thread
 
 class GUICube():
     t = Thistlethwaite()
@@ -262,7 +263,68 @@ class GUICube():
                     sleep(.1)
 
         self.rotationSpeed = self.defaultRotationSpeed
+
+        self.showSolution(solution)
     
+    def showSolution(self, solution: list):
+        self.start = Button(model='quad', text=' Start →', visible=False, scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
+        self.next = Button(model='quad', text=' Next →', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
+        self.back = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
+        
+        self.start.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.next.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.back.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+
+        self.start.visible = True
+
+        self.moveIndex = 0
+        self.solution = solution
+        self.start.on_click = self.threadNext
+    
+    def threadNext(self):
+        t = Thread(target=self.nextMove)
+        t.daemon = True
+        t.start()
+    
+    def threadPrev(self):
+        t = Thread(target=self.prevMove)
+        t.daemon = True
+        t.start()
+
+    def nextMove(self):
+        if not self.rotating:
+            # Disable buttons whilst rotating
+            self.start.on_click = None
+            self.next.on_click = None
+            self.back.on_click = None
+            move = self.solution[self.moveIndex]
+            if move != 'END':
+                sleep(.2)
+                for _ in range(move[2]):
+                    self.rotateFace(move[0], move[1])
+                    sleep(.5)
+
+                self.moveIndex += 1
+
+                # Re-enable buttons
+                if self.moveIndex >= 1:
+                    self.start.on_click = None
+                    self.start.z = 1
+                    self.start.visible = False
+                    self.start.disabled = True
+
+                    self.next.on_click = self.threadNext
+                    self.next.visible = True
+                    self.next.disabled = False
+
+                    self.back.on_click = self.threadPrev
+                    self.back.visible = True
+                    self.back.disabled = False
+
+    def prevMove(self, moveIndex: int, solution: list):
+        if not self.rotating:
+            pass
+
     def Update(self):
         if self.rotating:
             if self.rotating_col == "w+":
