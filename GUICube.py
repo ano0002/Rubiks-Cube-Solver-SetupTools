@@ -321,9 +321,47 @@ class GUICube():
                     self.back.visible = True
                     self.back.disabled = False
 
-    def prevMove(self, moveIndex: int, solution: list):
+    def prevMove(self):
         if not self.rotating:
-            pass
+            # Disable buttons whilst rotating
+            self.start.on_click = None
+            self.next.on_click = None
+            self.back.on_click = None
+            move = self.solution[self.moveIndex-1]
+            sleep(.2)
+            for _ in range(move[2]):
+                self.rotateFace(move[0], -move[1])
+                sleep(.5)
+            
+            self.moveIndex -= 1
+
+            if self.moveIndex >= 1:
+                self.start.on_click = None
+                self.start.z = 1
+                self.start.visible = False
+                self.start.disabled = True
+
+                self.next.on_click = self.threadNext
+                self.next.visible = True
+                self.next.disabled = False
+
+                self.back.on_click = self.threadPrev
+                self.back.visible = True
+                self.back.disabled = False
+
+            elif self.moveIndex == 0:
+                self.start.on_click = self.threadNext
+                self.start.z = 0
+                self.start.visible = True
+                self.start.disabled = False
+
+                self.next.on_click = None
+                self.next.visible = False
+                self.next.disabled = True
+
+                self.back.on_click = None
+                self.back.visible = False
+                self.back.disabled = True
 
     def Update(self):
         if self.rotating:
