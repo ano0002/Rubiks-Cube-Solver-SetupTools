@@ -71,6 +71,15 @@ def input(key):
         guiCube.rotateFace(5, -1)
     elif key == "l":
         i.destroySelf()
+    elif key == "b":
+        i.destroySelf()
+        cube = getRandomScramble(100)
+        thistle = Thistlethwaite()
+        _, solution = thistle.Solve(cube)
+        t = Thread(target=guiCube.scrambleToSolution, args=[copy(solution)])
+        t.daemon = True
+
+        t.start()
 
 
 camera.x = 20

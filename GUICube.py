@@ -302,7 +302,7 @@ class GUICube():
                 sleep(.2)
                 for _ in range(move[2]):
                     self.rotateFace(move[0], move[1])
-                    sleep(.5)
+                    sleep(.3)
 
                 self.moveIndex += 1
 
@@ -331,7 +331,7 @@ class GUICube():
             sleep(.2)
             for _ in range(move[2]):
                 self.rotateFace(move[0], -move[1])
-                sleep(.5)
+                sleep(.3)
             
             self.moveIndex -= 1
 
