@@ -67,12 +67,12 @@ class InputMenu:
             self.paletteButtons.append(button)
 
         # Fonts
-        self.paletteBorder.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
-        self.nextButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
-        self.backButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
-        self.solveButton.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
-        self.errorBg.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
-        self.errorOk.text_entity.font = r'Data\DMSans_36pt-Regular.ttf'
+        self.paletteBorder.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.nextButton.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.backButton.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.solveButton.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.errorBg.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.errorOk.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
