@@ -4,6 +4,7 @@ from cube import *
 from GUICube import *
 from InputMenu import *
 from threading import Thread
+from MainMenu import *
 
 app = Ursina(development_mode=True, show_ursina_splash=False)
 
@@ -15,13 +16,31 @@ colourMappings = {
     4 : color.green,
     5 : color.yellow
 }
-            
-guiCube = GUICube()
+
+exitCode = []
+guiCube = GUICube(exitCode)
 solution = []
+
 
 def update():
     global guiCube
     global solution
+    global exitCode
+
+    try:
+        # Test to see cube hasn't been destroyed, make new one if it has
+        guiCube.cube[0][0][0].x
+    except:
+        # If M has been passed out of the GUICube, it means a menu must be created
+        try:
+            if exitCode[0] == "M":
+                exitCode = []
+                guiCube = GUICube(exitCode)
+                m = MainMenu(guiCube, solution)
+        except:
+            guiCube = GUICube(exitCode)
+    
+
     try:
         if solution[-1] == 'END':
             t = Thread(target=guiCube.scrambleToSolution, args=[copy(solution)])
@@ -35,7 +54,6 @@ def update():
 
 def input(key):
     global guiCube
-    global i
     if key == "up arrow":
         guiCube.rotateCubeUp()
     elif key == "down arrow":
@@ -68,17 +86,8 @@ def input(key):
         guiCube.rotateFace(5, 1)
     elif key == "j":
         guiCube.rotateFace(5, -1)
-    elif key == "l":
-        i.destroySelf()
-    elif key == "b":
-        i.destroySelf()
-        cube = getRandomScramble(100)
-        thistle = Thistlethwaite()
-        _, solution = thistle.Solve(cube)
-        t = Thread(target=guiCube.scrambleToSolution, args=[copy(solution)])
-        t.daemon = True
-
-        t.start()
+    elif key == "n":
+        guiCube.destroySelf()
 
 
 camera.x = 20
@@ -86,6 +95,6 @@ camera.y = 20
 camera.fov = 25
 camera.look_at((0, 0, 0))
 
-i = InputMenu(solution)
+m = MainMenu(guiCube, solution)
 
 app.run()

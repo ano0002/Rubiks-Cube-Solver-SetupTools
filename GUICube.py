@@ -6,7 +6,7 @@ from threading import Thread
 class GUICube():
     t = Thistlethwaite()
 
-    def __init__(self, defaultRotationSpeed: int=400) -> None:
+    def __init__(self, exitCode: list, defaultRotationSpeed: int=400) -> None:
         cubepiece = Entity(model='cube', color=color.black)
         blueplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=-0.5, color=color.blue, parent=cubepiece)
         yellowplate = Entity(model="cube", scale_x=0.1, scale_y=0.9, scale_z=0.9, x=-0.5, color=color.yellow, parent=cubepiece)
@@ -14,6 +14,8 @@ class GUICube():
         whiteplate = Entity(model="cube", scale_x=0.1, scale_y=0.9, scale_z=0.9, x=0.5, color=color.white, parent=cubepiece)
         orangeplate = Entity(model="cube", scale_x=0.9, scale_y=0.1, scale_z=0.9, y=-0.5, color=color.orange, parent=cubepiece)
         greenplate = Entity(model="cube", scale_x=0.9, scale_y=0.9, scale_z=0.1, z=0.5, color=color.green, parent=cubepiece)
+
+        self.exitCode = exitCode
 
         self.rotationSpeed = defaultRotationSpeed
         self.defaultRotationSpeed = defaultRotationSpeed
@@ -269,11 +271,13 @@ class GUICube():
     def showSolution(self, solution: list):
         self.start = Button(model='quad', text=' Start →', visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
         self.next = Button(model='quad', text=' Next →', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
+        self.done = Button(model='quad', text=' Done ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
         self.back = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.245, y=-0.375, color=color.black90)
         self.replay = Button(model='quad', text='⟳ Replay ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0, y=-0.375, color=color.black90)
         
         self.start.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.next.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.done.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.back.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.replay.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
 
@@ -323,7 +327,31 @@ class GUICube():
                 sleep(.3)
 
             # Re-enable buttons
-            if self.moveIndex >= 1:
+            if self.moveIndex == len(self.solution) - 1:
+                self.done.on_click = self.returnToMenu
+                self.done.visible = True
+                self.done.disabled = False
+                self.done.z = 0
+                
+                self.next.on_click = None
+                self.next.visible = False
+                self.next.disabled = True
+                self.next.z = 1
+
+                self.back.on_click = self.threadPrev
+                self.back.visible = True
+                self.back.disabled = False
+
+                self.replay.on_click = self.threadReplay
+                self.replay.visible = True
+                self.replay.disabled = False
+
+                self.start.on_click = None
+                self.start.z = 1
+                self.start.visible = False
+                self.start.disabled = True
+
+            elif self.moveIndex >= 1:
                 self.start.on_click = None
                 self.start.z = 1
                 self.start.visible = False
@@ -357,15 +385,16 @@ class GUICube():
                 self.moveIndex += 1
 
                 # Re-enable buttons
-                if self.moveIndex >= 1:
-                    self.start.on_click = None
-                    self.start.z = 1
-                    self.start.visible = False
-                    self.start.disabled = True
-
-                    self.next.on_click = self.threadNext
-                    self.next.visible = True
-                    self.next.disabled = False
+                if self.moveIndex == len(self.solution) - 1:
+                    self.done.on_click = self.returnToMenu
+                    self.done.visible = True
+                    self.done.disabled = False
+                    self.done.z = 0
+                    
+                    self.next.on_click = None
+                    self.next.visible = False
+                    self.next.disabled = True
+                    self.next.z = 1
 
                     self.back.on_click = self.threadPrev
                     self.back.visible = True
@@ -374,9 +403,30 @@ class GUICube():
                     self.replay.on_click = self.threadReplay
                     self.replay.visible = True
                     self.replay.disabled = False
-                
-                elif self.moveIndex == len(self.solution) - 1:
-                    pass
+
+                    self.start.on_click = None
+                    self.start.z = 1
+                    self.start.visible = False
+                    self.start.disabled = True
+
+                elif self.moveIndex >= 1:
+                    self.start.on_click = None
+                    self.start.z = 1
+                    self.start.visible = False
+                    self.start.disabled = True
+
+                    self.next.on_click = self.threadNext
+                    self.next.visible = True
+                    self.next.disabled = False
+                    self.next.z = 0
+
+                    self.back.on_click = self.threadPrev
+                    self.back.visible = True
+                    self.back.disabled = False
+
+                    self.replay.on_click = self.threadReplay
+                    self.replay.visible = True
+                    self.replay.disabled = False
 
     def prevMove(self):
         if not self.rotating:
@@ -401,6 +451,7 @@ class GUICube():
                 self.next.on_click = self.threadNext
                 self.next.visible = True
                 self.next.disabled = False
+                self.next.z = 0
 
                 self.back.on_click = self.threadPrev
                 self.back.visible = True
@@ -409,6 +460,11 @@ class GUICube():
                 self.replay.on_click = self.threadReplay
                 self.replay.visible = True
                 self.replay.disabled = False
+
+                self.done.on_click = None
+                self.done.visible = False
+                self.done.disabled = True
+                self.done.z = 1
 
             elif self.moveIndex == 0:
                 self.start.on_click = self.threadNext
@@ -419,6 +475,7 @@ class GUICube():
                 self.next.on_click = None
                 self.next.visible = False
                 self.next.disabled = True
+                self.next.z = 1
 
                 self.back.on_click = None
                 self.back.visible = False
@@ -427,6 +484,33 @@ class GUICube():
                 self.replay.on_click = None
                 self.replay.visible = False
                 self.replay.disabled = True
+
+                self.done.on_click = None
+                self.done.visible = False
+                self.done.disabled = True
+                self.done.z = 1
+
+    def returnToMenu(self):
+        self.exitCode.append("M")
+        self.destroySelf()
+    
+    def destroyButtons(self):
+        destroy(self.start)
+        destroy(self.next)
+        destroy(self.back)
+        destroy(self.replay)
+        destroy(self.done)
+
+    def destroySelf(self):
+        for i in range(3):
+            for j in range(3):
+                for k in range(3):
+                    destroy(self.cube[i][j][k])
+        
+        try:
+            self.destroyButtons()
+        except:
+            print("Buttons not yet created")
 
     def Update(self):
         if self.rotating:
@@ -538,3 +622,4 @@ class GUICube():
                 else:
                     self.rotateOrange(-self.rotationSpeed * time.dt)
                     self.editRotationDeg(self.rotationSpeed * time.dt)
+        
