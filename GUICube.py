@@ -314,7 +314,7 @@ class GUICube():
                 sleep(time.dt)
             self.rotationSpeed = self.defaultRotationSpeed
 
-            sleep(1)
+            sleep(.5)
 
             # Show move normally
             sleep(.2)

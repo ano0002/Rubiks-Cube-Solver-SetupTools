@@ -24,7 +24,6 @@ def update():
     global solution
     try:
         if solution[-1] == 'END':
-            print("SOLUTION RECEIVED")
             t = Thread(target=guiCube.scrambleToSolution, args=[copy(solution)])
             t.daemon = True
             t.start()
