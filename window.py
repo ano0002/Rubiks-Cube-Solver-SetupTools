@@ -21,6 +21,10 @@ exitCode = []
 guiCube = GUICube(exitCode)
 solution = []
 
+# Close Button
+close = Button(model='quad', scale=.05, color=color.color(0.7, 0.7, 0.7, 1), x=0.835, y=0.45, z=-5, text="X", on_click=quit)
+close.text_entity.size = .05
+close.text_entity.font = r"Data\CurvedSquare-eDzl.ttf"
 
 def update():
     global guiCube
