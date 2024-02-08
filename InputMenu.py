@@ -247,23 +247,36 @@ class InputMenu:
         
         if SolverTools().isCubeValid(Cube(state=regularCube)):
             if not SolverTools().isSolved(Cube(state=regularCube)):
-                moves = []
-                t = Thread(target=self.Solve, args=(Cube(state=regularCube), moves))
+                t = Thread(target=self.Solve, args=[Cube(state=regularCube)])
                 t.daemon = True
                 t.start()
-                t.join()
-                if len(moves) == 0:
-                    self.showError()
-                else:
-                    for move in moves:
-                        self.solution.append(move)
-                    self.solution.append('END') # END flag
-                    self.destroySelf()
             else:
                 self.showSolvedError()
         else:
             self.showError()
     
+    def ReceiveSolution(self, moves: list):
+        if len(moves) == 0:
+            self.showError()
+        else:
+            for move in moves:
+                self.solution.append(move)
+            self.solution.append('END') # END flag
+            self.destroySelf()
+    
+    def Solve(self, cube: Cube):
+        t = Thistlethwaite()
+        try:
+            _, result = t.Solve(cube, terminate_after=5)
+            self.ReceiveSolution(result)
+            return None
+        except TimeoutError:
+            self.ReceiveSolution([])
+            return None
+        except Exception as e:
+            print(e)
+            return None
+
     def showSolvedError(self):
         self.solveButton.disabled = True
         self.solveButton.on_click = None
@@ -297,19 +310,6 @@ class InputMenu:
         self.errorBg.z = 4
         self.errorOk.z = 4
         self.errorOk.on_click = None
-
-    def Solve(self, cube: Cube, moves: list):
-        t = Thistlethwaite()
-        try:
-            _, result = t.Solve(cube, terminate_after=5)
-            for move in result:
-                moves.append(move)
-            return None
-        except TimeoutError:
-            return None
-        except Exception as e:
-            print(e)
-            return None
 
     def showError(self):
         self.solveButton.disabled = True
