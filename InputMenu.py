@@ -12,6 +12,14 @@ colourMappings = {
     4 : color.green,
     5 : color.yellow
 }
+titleMappings = {
+    0 : "white",
+    1 : "red",
+    2 : "blue",
+    3 : "orange",
+    4 : "green",
+    5 : "yellow"
+}
 
 class InputMenu:
     def __init__(self, solution: list) -> None:
@@ -87,9 +95,55 @@ class InputMenu:
                         self.faceData[i][j][k] = colourMappings[self.faceData[i][j][k]]
                     else:
                         self.faceData[i][j][k] = color.white
+        
+        self.updateTitle()
     
     def setColor(self, button: Button):
         self.selectedColor = button.color
+    
+    def updateTitle(self):
+        # Title
+        # Delete all existing letters if possible
+        try:
+            for letter in self.letters:
+                destroy(letter)
+            self.letters = []
+        except:
+            pass
+
+        text = f"enter {titleMappings[self.currentFace]} face"
+        y = 0.42
+        titletext = dedent(text)
+
+        Text.default_font = r"Data\CurvedSquare-eDzl.ttf"
+        Text.default_resolution = 4320 * Text.size
+
+        title = Text(size=.08)
+        title.text = titletext
+        fullwidth = title.width
+
+        destroy(title)
+        toggleTitleColor = False
+        self.letters = []
+        colors = [color.white, color.red, color.blue, color.orange, color.green, color.yellow]
+        col_i = 0
+        for i, char in enumerate(text):
+            letter = Text(size=.08)
+            letter.text = dedent(char)
+            letter.x = -fullwidth/2 + i*(fullwidth/len(text))
+            letter.y = y
+            
+            if char != " ":
+                if not toggleTitleColor:
+                    letter.color = colors[col_i]
+                    col_i += 1
+                    col_i %= len(colors)
+                else:
+                    letter.color = colors[self.currentFace]
+            else:
+                toggleTitleColor = not toggleTitleColor
+            
+            self.letters.append(letter)
     
     def paintColor(self, button: Button):
         button.color = self.selectedColor
@@ -107,6 +161,8 @@ class InputMenu:
         self.centreButton.color = colourMappings[self.currentFace]
         self.centreButton.highlight_color = self.centreButton.color
         self.centreButton.pressed_color = self.centreButton.color
+
+        self.updateTitle()
 
         if self.currentFace == 0:
             self.backButton.disabled = True
@@ -187,24 +243,61 @@ class InputMenu:
                 for k in range(3):
                     regularCube[i][k][j] = invertedMappings[self.faceData[i][j][k]]
 
-        regularCube = [list(x)[::-1] for x in regularCube]
-
+        regularCube = [list(x)[::-1] for x in regularCube] # Face data needs to be mapped differently
+        
         if SolverTools().isCubeValid(Cube(state=regularCube)):
-            moves = []
-            t = Thread(target=self.Solve, args=(Cube(state=regularCube), moves))
-            t.daemon = True
-            t.start()
-            t.join()
-            if len(moves) == 0 and Cube().getState() != regularCube:
-                self.showError()
+            if not SolverTools().isSolved(Cube(state=regularCube)):
+                moves = []
+                t = Thread(target=self.Solve, args=(Cube(state=regularCube), moves))
+                t.daemon = True
+                t.start()
+                t.join()
+                if len(moves) == 0:
+                    self.showError()
+                else:
+                    for move in moves:
+                        self.solution.append(move)
+                    self.solution.append('END') # END flag
+                    self.destroySelf()
             else:
-                for move in moves:
-                    self.solution.append(move)
-                self.solution.append('END') # END flag
-                self.destroySelf()
+                self.showSolvedError()
         else:
             self.showError()
     
+    def showSolvedError(self):
+        self.solveButton.disabled = True
+        self.solveButton.on_click = None
+        self.backButton.disabled = True
+        self.backButton.on_click = None
+        for row in self.buttons:
+            for button in row:
+                button.disabled = True
+                button.on_click = None
+        self.errorBg.text = 'ERROR\n\nThe cube you entered is already solved!\nGo back and enter an unsolved cube.\nUse the coloured arrows to ensure\nthe faces are correctly oriented.'
+        self.errorBg.visible = True
+        self.errorOk.visible = True
+        self.errorOk.disabled = False
+        self.errorBg.z = -4
+        self.errorOk.z = -5
+        self.errorOk.on_click = self.hideSolvedError
+    
+    def hideSolvedError(self):
+        self.solveButton.disabled = False
+        self.solveButton.on_click = self.trySolve
+        self.backButton.disabled = False
+        self.backButton.on_click = Func(self.cycleFace, -1)
+        for row in self.buttons:
+            for button in row:
+                button.disabled = False
+                button.on_click = Func(self.paintColor, button)
+        self.errorBg.visible = False
+        self.errorBg.text = 'ERROR\n\nInvalid cube configuration entered.\nGo back and check all faces are correct!\nUse the coloured arrows to ensure\nthe faces are correctly oriented.'
+        self.errorOk.visible = False
+        self.errorOk.disabled = True
+        self.errorBg.z = 4
+        self.errorOk.z = 4
+        self.errorOk.on_click = None
+
     def Solve(self, cube: Cube, moves: list):
         t = Thistlethwaite()
         try:
@@ -218,7 +311,6 @@ class InputMenu:
             print(e)
             return None
 
-    
     def showError(self):
         self.solveButton.disabled = True
         self.solveButton.on_click = None
@@ -257,6 +349,8 @@ class InputMenu:
                 destroy(button)
         for button in self.paletteButtons:
             destroy(button)
+        for letter in self.letters:
+            destroy(letter)
         destroy(self.bg)
         destroy(self.border)
         destroy(self.paletteBorder)

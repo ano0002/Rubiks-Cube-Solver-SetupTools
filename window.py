@@ -6,7 +6,7 @@ from InputMenu import *
 from threading import Thread
 from MainMenu import *
 
-app = Ursina(development_mode=True, show_ursina_splash=False)
+app = Ursina(development_mode=False, show_ursina_splash=False)
 
 colourMappings = {
     0 : color.white,
@@ -39,7 +39,6 @@ def update():
                 m = MainMenu(guiCube, solution)
         except:
             guiCube = GUICube(exitCode)
-    
 
     try:
         if solution[-1] == 'END':

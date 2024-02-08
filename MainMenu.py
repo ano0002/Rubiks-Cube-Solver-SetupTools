@@ -12,7 +12,7 @@ class MainMenu:
         self.end = False
 
         text = "rubiks cube solver"
-        y = 0.4
+        y = 0.42
         titletext = dedent(text)
 
         Text.default_font = r"Data\CurvedSquare-eDzl.ttf"
