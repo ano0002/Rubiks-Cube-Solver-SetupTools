@@ -44,6 +44,18 @@ class GUICube():
         self.rotating_col = None
         self.rotation_deg = 0
 
+        # Buttons for showing solution
+        self.start = Button(model='quad', text=' Start →', visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
+        self.next = Button(model='quad', text=' Next →', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
+        self.done = Button(model='quad', text=' Done ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
+        self.back = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.245, y=-0.375, color=color.black90)
+        self.replay = Button(model='quad', text='⟳ Replay ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0, y=-0.375, z=1, color=color.black90)
+        self.start.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.next.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.done.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.back.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.replay.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+
     def rotateYellow(self, scale: int) -> None:
         for line in self.cube[0]:
             for piece in line:
@@ -268,25 +280,81 @@ class GUICube():
 
         self.showSolution(solution)
     
-    def showSolution(self, solution: list):
-        self.start = Button(model='quad', text=' Start →', visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
-        self.next = Button(model='quad', text=' Next →', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
-        self.done = Button(model='quad', text=' Done ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0.245, y=-0.375, color=color.black90)
-        self.back = Button(model='quad', text='← Back ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=-0.245, y=-0.375, color=color.black90)
-        self.replay = Button(model='quad', text='⟳ Replay ', disabled=True, visible=False, scale_x=.175, scale_y = 0.075, x=0, y=-0.375, color=color.black90)
-        
-        self.start.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-        self.next.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-        self.done.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-        self.back.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-        self.replay.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-
+    def showSolution(self, solution: list):        
         self.start.visible = True
+        self.replay.z = 0
 
         self.moveIndex = 0
         self.solution = solution
         self.start.on_click = self.threadNext
+
+        y = 0.42
+        slashtext = dedent("/")
+
+        Text.default_font = r"Data\CurvedSquare-eDzl.ttf"
+        Text.default_resolution = 4320 * Text.size
+
+        self.slash = Text(size=.08, y=y, color=color.white)
+        self.slash.text = slashtext
+        self.slash.x = -0.5*self.slash.width
+        self.moveCount = []
+        self.updateMoveCount()
     
+    def updateMoveCount(self):
+        # Delete all existing numbers if possible
+        try:
+            for letter in self.moveCount:
+                destroy(letter)
+            self.moveCount = []
+        except:
+            pass
+
+        text = f"{self.moveIndex+1}"
+        y = 0.42
+        text = dedent(text)
+
+        Text.default_font = r"Data\CurvedSquare-eDzl.ttf"
+        Text.default_resolution = 4320 * Text.size
+
+        title = Text(size=.08)
+        title.text = text
+        fullwidth = title.width
+        destroy(title)
+
+        colors = [color.red, color.blue, color.orange, color.green, color.yellow]
+        col_i = 0
+        for i, char in enumerate(text):
+            letter = Text(size=.08)
+            letter.text = dedent(char)
+            letter.x = -fullwidth -0.5*(fullwidth/len(text)) + i*(fullwidth/len(text))
+            letter.y = y
+            letter.color = colors[col_i]
+            col_i += 1
+            col_i %= len(colors)
+            self.moveCount.append(letter)
+        
+        text = f"{len(self.solution)}"
+        y = 0.42
+        text = dedent(text)
+
+        Text.default_font = r"Data\CurvedSquare-eDzl.ttf"
+        Text.default_resolution = 4320 * Text.size
+
+        title = Text(size=.08)
+        title.text = text
+        fullwidth = title.width
+        destroy(title)
+
+        for i, char in enumerate(text):
+            letter = Text(size=.08)
+            letter.text = dedent(char)
+            letter.x = 0.5*(fullwidth/len(text)) + i*(fullwidth/len(text))
+            letter.y = y
+            letter.color = colors[col_i]
+            col_i += 1
+            col_i %= len(colors)
+            self.moveCount.append(letter)
+
     def threadNext(self):
         t = Thread(target=self.nextMove)
         t.daemon = True
@@ -383,6 +451,7 @@ class GUICube():
                     sleep(.3)
 
                 self.moveIndex += 1
+                self.updateMoveCount()
 
                 # Re-enable buttons
                 if self.moveIndex == len(self.solution) - 1:
@@ -441,6 +510,7 @@ class GUICube():
                 sleep(.3)
             
             self.moveIndex -= 1
+            self.updateMoveCount()
 
             if self.moveIndex >= 1:
                 self.start.on_click = None
@@ -500,6 +570,11 @@ class GUICube():
         destroy(self.back)
         destroy(self.replay)
         destroy(self.done)
+    
+    def destroyText(self):
+        for letter in self.moveCount:
+            destroy(letter)
+        destroy(self.slash)
 
     def destroySelf(self):
         for i in range(3):
@@ -511,6 +586,11 @@ class GUICube():
             self.destroyButtons()
         except:
             print("Buttons not yet created")
+        
+        try:
+            self.destroyText()
+        except:
+            print("Text not yet created")
 
     def Update(self):
         if self.rotating:

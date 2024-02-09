@@ -39,11 +39,11 @@ class MainMenu:
             
             self.letters.append(letter)
         
-        self.startButton = Button(model='quad', text=' Start ', visible=True, scale_x=.175, scale_y = 0.075, x=-0.145, y=-0.375, color=color.black90)
-        self.instructions = Button(model='quad', text=' Instructions ', visible=True, scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
+        self.startButton = Button(model='quad', text=' Start ', visible=True, scale_x=.175, scale_y = 0.075, x=0, y=-0.375, color=color.black90)
+        # self.instructions = Button(model='quad', text=' Instructions ', visible=True, scale_x=.175, scale_y = 0.075, x=0.145, y=-0.375, color=color.black90)
 
         self.startButton.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
-        self.instructions.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        # self.instructions.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
 
         self.startButton.on_click = self.start
 
@@ -57,7 +57,7 @@ class MainMenu:
             destroy(letter)
 
         destroy(self.startButton)
-        destroy(self.instructions)
+        # destroy(self.instructions)
         self.guiCube.destroySelf()
 
     def start(self):

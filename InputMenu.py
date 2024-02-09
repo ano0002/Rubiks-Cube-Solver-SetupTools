@@ -39,6 +39,11 @@ class InputMenu:
         self.selectedColor = color.white
         self.faceData = []
 
+        # Instructions
+        instructionstext = "Enter the faces of your cube!\n\nThe centre piece of a face determines that face's color.\n\nUse the coloured arrows that denote the color of the adjacent faces to ensure you are entering a face in the correct orientation."
+
+        self.instructions = Text(text=instructionstext, wordwrap=20, size=.04, x=-0.8, y=0.28)
+
         # For output
         self.solution = solution
 
@@ -81,6 +86,7 @@ class InputMenu:
         self.solveButton.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.errorBg.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.errorOk.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
+        self.instructions.font = r'Data\DMSans36pt-Regular.ttf'
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
@@ -363,3 +369,4 @@ class InputMenu:
         destroy(self.solveButton)
         destroy(self.errorBg)
         destroy(self.errorOk)
+        destroy(self.instructions)
