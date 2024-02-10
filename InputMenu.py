@@ -52,7 +52,7 @@ class InputMenu:
 
         self.solving = Button(model='quad', scale=0.1, scale_x=.4, z=2, disabled=True, visible=False, color=color.rgb(.3, .3, 1, 1), text="Solving...")
         self.solving.text_entity.scale_x = 3
-        self.solving.text_entity.scale_y = 9
+        self.solving.text_entity.scale_y = 12
 
         # Input Grid
         self.buttons: list[list[Button]] = []
@@ -293,13 +293,11 @@ class InputMenu:
         try:
             _, result = t.Solve(cube, terminate_after=5)
             self.ReceiveSolution(result)
-            return None
         except TimeoutError:
             self.ReceiveSolution([])
-            return None
-        except Exception as e:
-            print(e)
-            return None
+        except TypeError: # A stage failed and None was returned
+            self.ReceiveSolution([])
+        return
 
     def showSolvedError(self):
         self.solving.visible = False
@@ -338,6 +336,8 @@ class InputMenu:
         self.errorOk.on_click = None
 
     def showError(self):
+        self.solving.visible = False
+        self.solving.z = 2
         self.solveButton.disabled = True
         self.solveButton.on_click = None
         self.backButton.disabled = True

@@ -87,9 +87,10 @@ class Thistlethwaite:
     def DFS(self, cube: Cube, solution: list, depthRemaining: int, table: dict, tableMaxDepth: int, ts, terminate_after) -> str:
         if self.solver.isSolved(cube):
             return solution
-        
+
         if terminate_after is not None:
             if tm() - ts > terminate_after:
+                print("TIMED OUT")
                 raise TimeoutError
         
         try:
@@ -103,12 +104,12 @@ class Thistlethwaite:
             return None
 
         for move in self.validMoves:
-            for i in range(move[2]):
+            for _ in range(move[2]):
                 cube.rotateFace(move[0], move[1])
             extSolution = solution.copy()
             extSolution.append(move)
             result = self.DFS(cube, extSolution, depthRemaining-1, table, tableMaxDepth, ts, terminate_after)
-            for i in range(move[2]):
+            for _ in range(move[2]):
                 cube.rotateFace(move[0], -move[1])
             if result is not None:
                 return result
