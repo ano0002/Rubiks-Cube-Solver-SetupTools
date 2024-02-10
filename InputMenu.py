@@ -50,6 +50,10 @@ class InputMenu:
         self.errorBg = Button(model='quad', scale=0.4, scale_x=.7, z=2, disabled=True, visible=False, color=color.color(0.7, 0.7, 0.7, 1), text_origin=(0,0.2), text='ERROR\n\nInvalid cube configuration entered.\nGo back and check all faces are correct!\nUse the coloured arrows to ensure\nthe faces are correctly oriented.')
         self.errorOk = Button(model='quad', scale_x=.12, z=2, scale_y=0.05, y=-0.1, disabled=True, visible=False, color=color.black66, text='OK', on_click=None)
 
+        self.solving = Button(model='quad', scale=0.1, scale_x=.4, z=2, disabled=True, visible=False, color=color.rgb(.3, .3, 1, 1), text="Solving...")
+        self.solving.text_entity.scale_x = 3
+        self.solving.text_entity.scale_y = 9
+
         # Input Grid
         self.buttons: list[list[Button]] = []
         for i in range(3):
@@ -87,6 +91,7 @@ class InputMenu:
         self.errorBg.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.errorOk.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
         self.instructions.font = r'Data\DMSans36pt-Regular.ttf'
+        self.solving.text_entity.font = r'Data\DMSans36pt-Regular.ttf'
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
@@ -256,10 +261,23 @@ class InputMenu:
                 t = Thread(target=self.Solve, args=[Cube(state=regularCube)])
                 t.daemon = True
                 t.start()
+                self.showSolving()
             else:
                 self.showSolvedError()
         else:
             self.showError()
+        
+    def showSolving(self):
+        self.solveButton.disabled = True
+        self.solveButton.on_click = None
+        self.backButton.disabled = True
+        self.backButton.on_click = None
+        for row in self.buttons:
+            for button in row:
+                button.disabled = True
+                button.on_click = None
+        self.solving.visible = True
+        self.solving.z = -5
     
     def ReceiveSolution(self, moves: list):
         if len(moves) == 0:
@@ -284,6 +302,8 @@ class InputMenu:
             return None
 
     def showSolvedError(self):
+        self.solving.visible = False
+        self.solving.z = 2
         self.solveButton.disabled = True
         self.solveButton.on_click = None
         self.backButton.disabled = True
@@ -358,6 +378,7 @@ class InputMenu:
         for letter in self.letters:
             destroy(letter)
         destroy(self.bg)
+        destroy(self.solving)
         destroy(self.border)
         destroy(self.paletteBorder)
         destroy(self.nextButton)
