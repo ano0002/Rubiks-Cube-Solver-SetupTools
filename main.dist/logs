@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\main.py", line 9, in <module>
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\scripts\singleton_decorator.py", line 4, in getinstance
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\main.py", line 125, in __init__
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\window.py", line 213, in make_editor_gui
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\prefabs\tooltip.py", line 13, in __init__
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\text.py", line 394, in create_background
-  File "C:\Users\recke\DOCUME~1\GitHub\RUBIKS~1\MAIN~1.DIS\ursina\text.py", line 278, in width
-AttributeError: 'Tooltip' object has no attribute '_font'
