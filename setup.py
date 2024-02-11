@@ -13,7 +13,7 @@ setup(
                 '**/*.ursinamesh'
             ],
             'gui_apps': {
-                'Your Program Name': 'main.py',
+                'Rubiks Cube Solver': 'main.py',
             },
             'plugins': [
                 'pandagl',
