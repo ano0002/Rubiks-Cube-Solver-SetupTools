@@ -26,12 +26,12 @@ To install the project, you need to have Python installed on your system. You ca
 pip install -r requirements.txt
 ```
 
-##Building
+## Building
 To build the project, run the following command:
 ```sh
 python setup.py build_apps
 ```
-##Running
+## Running
 To run the project without building it, use the following command:
 ```sh
 python main.py
