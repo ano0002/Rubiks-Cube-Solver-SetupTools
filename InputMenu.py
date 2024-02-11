@@ -48,7 +48,7 @@ class InputMenu:
         self.solution = solution
 
         self.errorBg = Button(model='quad', scale=0.4, scale_x=.7, z=2, disabled=True, visible=False, color=color.color(0.7, 0.7, 0.7, 1), text_origin=(0,0.2), text='ERROR\n\nInvalid cube configuration entered.\nGo back and check all faces are correct!\nUse the coloured arrows to ensure\nthe faces are correctly oriented.')
-        self.errorOk = Button(model='quad', scale_x=.12, z=2, scale_y=0.05, y=-0.1, disabled=True, visible=False, color=color.black66, text='OK', on_click=None)
+        self.errorOk = Button(model='quad', scale_x=.12, z=2, scale_y=0.05, y=-0.1, disabled=True, visible=False, color=color.black66, text='OK')
 
         self.solving = Button(model='quad', scale=0.1, scale_x=.4, z=2, disabled=True, visible=False, color=color.rgb(.3, .3, 1, 1), text="Solving...")
         self.solving.text_entity.scale_x = 3
@@ -95,7 +95,7 @@ class InputMenu:
 
         # Onclick for next and back
         self.nextButton.on_click = Func(self.cycleFace, 1)
-        self.backButton.on_click = None
+        self.backButton.on_click = lambda x:None
 
         # Stored faces
         self.faceData = Cube().getState()
@@ -177,11 +177,11 @@ class InputMenu:
 
         if self.currentFace == 0:
             self.backButton.disabled = True
-            self.backButton.on_click = None
+            self.backButton.on_click = lambda x:None
             self.backButton.visible = False
         elif self.currentFace == 5:
             self.nextButton.disabled = True
-            self.nextButton.on_click = None
+            self.nextButton.on_click = lambda x:None
             self.nextButton.visible = False
             self.solveButton.disabled = False
             self.solveButton.on_click = self.trySolve
@@ -195,7 +195,7 @@ class InputMenu:
             self.nextButton.on_click = Func(self.cycleFace, 1)
             self.nextButton.visible = True
             self.solveButton.disabled = True
-            self.solveButton.on_click = None
+            self.solveButton.on_click = lambda x:None
             self.solveButton.visible = False
             self.solveButton.z = 1
 
@@ -269,13 +269,13 @@ class InputMenu:
         
     def showSolving(self):
         self.solveButton.disabled = True
-        self.solveButton.on_click = None
+        self.solveButton.on_click = lambda x:None
         self.backButton.disabled = True
-        self.backButton.on_click = None
+        self.backButton.on_click = lambda x:None
         for row in self.buttons:
             for button in row:
                 button.disabled = True
-                button.on_click = None
+                button.on_click = lambda x:None
         self.solving.visible = True
         self.solving.z = -5
     
@@ -303,13 +303,13 @@ class InputMenu:
         self.solving.visible = False
         self.solving.z = 2
         self.solveButton.disabled = True
-        self.solveButton.on_click = None
+        self.solveButton.on_click = lambda x:None
         self.backButton.disabled = True
-        self.backButton.on_click = None
+        self.backButton.on_click = lambda x:None
         for row in self.buttons:
             for button in row:
                 button.disabled = True
-                button.on_click = None
+                button.on_click = lambda x:None
         self.errorBg.text = 'ERROR\n\nThe cube you entered is already solved!\nGo back and enter an unsolved cube.\nUse the coloured arrows to ensure\nthe faces are correctly oriented.'
         self.errorBg.visible = True
         self.errorOk.visible = True
@@ -333,19 +333,19 @@ class InputMenu:
         self.errorOk.disabled = True
         self.errorBg.z = 4
         self.errorOk.z = 4
-        self.errorOk.on_click = None
+        self.errorOk.on_click = lambda x:None
 
     def showError(self):
         self.solving.visible = False
         self.solving.z = 2
         self.solveButton.disabled = True
-        self.solveButton.on_click = None
+        self.solveButton.on_click = lambda x:None
         self.backButton.disabled = True
-        self.backButton.on_click = None
+        self.backButton.on_click = lambda x:None
         for row in self.buttons:
             for button in row:
                 button.disabled = True
-                button.on_click = None
+                button.on_click = lambda x:None
         self.errorBg.visible = True
         self.errorOk.visible = True
         self.errorOk.disabled = False
@@ -367,7 +367,7 @@ class InputMenu:
         self.errorOk.disabled = True
         self.errorBg.z = 4
         self.errorOk.z = 4
-        self.errorOk.on_click = None
+        self.errorOk.on_click = lambda x:None
 
     def destroySelf(self):
         for row in self.buttons:
